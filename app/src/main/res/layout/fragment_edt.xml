@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.edt.EdtFragment"
+    android:orientation="vertical"
+    android:background="@color/darkBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/blue">
+
+        <Spinner
+            android:id="@+id/spinnerPromo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:layout_marginVertical="10dp"
+            tools:listitem="@layout/spinner_promo"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/ibCalendar"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:src="@drawable/ic_event"
+                app:tint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/ibLeft"
+                android:layout_width="75dp"
+                android:layout_height="25dp"
+                app:layout_constraintStart_toEndOf="@id/ibCalendar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:src="@drawable/ic_arrow_left"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/tvRange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="08/09 - 12/09"
+                android:textColor="@color/white"
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/ibRight"
+                android:layout_width="75dp"
+                android:layout_height="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="50dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:src="@drawable/ic_arrow_left"
+                app:tint="@color/white"
+                android:rotationY="180"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/clEdt">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
