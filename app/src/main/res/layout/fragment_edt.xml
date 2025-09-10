@@ -76,10 +76,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/clEdt">
+        android:id="@+id/scrollEdt">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -1,15 +1,13 @@
 package com.example.edt.ui.edt
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.edt.data.local.entity.AbbreviationEntity
 import com.example.edt.data.local.entity.CoursEntity
 import com.example.edt.data.repository.AbbreviationRepository
 import com.example.edt.data.repository.EdtRepository
+import com.example.edt.ui.edt.affichage.Affichage
 import com.example.edt.util.DateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
@@ -19,10 +17,16 @@ class EdtViewModel @Inject constructor(
     private val abbreviationRepository: AbbreviationRepository,
 ) : ViewModel() {
     private var _promo: String = ""
-    val promo: String get() = _promo
+    var promo: String get() = _promo
+        set(value) {
+            _promo = value
+        }
 
     private lateinit var _date: Date
-    val date: Date get() = _date
+    var date: Date get() = _date
+        set(value) {
+            _date = DateConverter.previousMonday(value)
+        }
 
     private lateinit var _edt: List<CoursEntity>
     val edt: List<CoursEntity> get() = _edt
@@ -31,19 +35,12 @@ class EdtViewModel @Inject constructor(
     val abbreviations: List<AbbreviationEntity> get() = _abbreviations
 
     init {
-        setPromo("but3-ra")
-        setDate(Date())
+        date = Date()
     }
-    fun setPromo(promo: String) {
-        _promo = promo
-    }
-
-    fun setDate(date: Date) {
-        _date = DateConverter.previousMonday(date)
-    }
-
-    suspend fun refresh() {
+    suspend fun refresh(affichage: Affichage) {
         _abbreviations = abbreviationRepository.getAbbreviation()
         _edt = edtRepository.getEdt(promo, date)
+
+        affichage.afficher(edt, abbreviations)
     }
 }
