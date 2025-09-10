@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.GridLayout.LayoutParams
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.allViews
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -15,22 +16,44 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleScope: LifecycleCoroutineScope): Affichage(lifecycleScope) {
-    override var binding = LayoutEdtSemaineBinding.inflate(inflater, parent, true)
+    private val rowHeight = 30
+    private val columnWidth = 60
+    override var binding = LayoutEdtSemaineBinding.inflate(inflater, parent, true).apply {
+        grid.allViews.forEach {
+            if (it is TextView) {
+                if (it.tag == "day") {
+                    it.layoutParams.width = (columnWidth.toFloat() * root.context.resources.displayMetrics.density).toInt()
+                } else {
+                    it.layoutParams.height = (rowHeight.toFloat() * root.context.resources.displayMetrics.density).toInt()
+                }
+            }
+        }
+    }
 
     override fun afficherCours(cours: CoursEntity, abbreviations: List<AbbreviationEntity>) {
         val jour = cours.debut.day
         if (jour != 0) {
-            val heureDebut = cours.debut.hours * 2 + if (cours.debut.minutes > 30) 1 else 0
-            val heureFin = cours.fin.hours * 2 + if (cours.fin.minutes > 30) 1 else 0
+            val heureDebut = cours.debut.hours * 2 + if (cours.debut.minutes >= 15) 1 else 0
+            val heureFin = cours.fin.hours * 2 + if (cours.fin.minutes >= 15) 1 else 0
             val rowSpan = heureFin - heureDebut
-            val row = heureDebut - 7
-            val param = LayoutParams()
-            param.rowSpec = GridLayout.spec(row,rowSpan - 1)
-            param.columnSpec = GridLayout.spec(jour,0)
+            val row = heureDebut - 11
+            val param = LayoutParams().apply {
+                rowSpec = GridLayout.spec(row,rowSpan - 1)
+                columnSpec = GridLayout.spec(jour,0)
+                width = (columnWidth.toFloat() * binding.root.context.resources.displayMetrics.density).toInt()
+                height = (rowHeight.toFloat() * binding.root.context.resources.displayMetrics.density * rowSpan).toInt()
+            }
+            val titre = cours.titre.split(": ").let {
+                if (it.size > 1) {
+                    Pair("${it[0]} : ", it[1])
+                } else {
+                    Pair("", it[0])
+                }
+            }
             lifecycleScope.launch(Dispatchers.Main) {
                 val coursBinding = LayoutCoursBinding.inflate(LayoutInflater.from(binding.root.context), binding.grid, false).apply {
                     tvSalle.text = cours.salle
-                    tvTitre.text = cours.titre
+                    tvTitre.text = titre.first + (abbreviations.find { it.mod_lib == titre.second }?.mod_code ?: titre.second)
                     root.layoutParams = param
                 }
 
