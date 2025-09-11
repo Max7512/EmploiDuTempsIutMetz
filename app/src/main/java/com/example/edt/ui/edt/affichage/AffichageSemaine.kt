@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.GridLayout.LayoutParams
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.allViews
@@ -16,15 +17,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleScope: LifecycleCoroutineScope): Affichage(lifecycleScope) {
+    private var density = 0f
     private val rowHeight = 30
     private val columnWidth = 60
     override var binding = LayoutEdtSemaineBinding.inflate(inflater, parent, true).apply {
+        density = root.context.resources.displayMetrics.density
         grid.allViews.forEach {
-            if (it is TextView) {
+            if (it is LinearLayout) {
                 if (it.tag == "day") {
-                    it.layoutParams.width = (columnWidth.toFloat() * root.context.resources.displayMetrics.density).toInt()
+                    it.layoutParams.width = (columnWidth.toFloat() * density).toInt()
                 } else {
-                    it.layoutParams.height = (rowHeight.toFloat() * root.context.resources.displayMetrics.density).toInt()
+                    it.layoutParams.height = (rowHeight.toFloat() * density).toInt()
                 }
             }
         }
@@ -38,10 +41,10 @@ class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleSco
             val rowSpan = heureFin - heureDebut
             val row = heureDebut - 11
             val param = LayoutParams().apply {
-                rowSpec = GridLayout.spec(row,rowSpan - 1)
+                rowSpec = GridLayout.spec(row,rowSpan)
                 columnSpec = GridLayout.spec(jour,0)
-                width = (columnWidth.toFloat() * binding.root.context.resources.displayMetrics.density).toInt()
-                height = (rowHeight.toFloat() * binding.root.context.resources.displayMetrics.density * rowSpan).toInt()
+                width = (columnWidth.toFloat() * density).toInt()
+                height = (rowHeight.toFloat() * density * rowSpan).toInt()
             }
             val titre = cours.titre.split(": ").let {
                 if (it.size > 1) {
