@@ -56,7 +56,7 @@ class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleSco
             lifecycleScope.launch(Dispatchers.Main) {
                 val coursBinding = LayoutCoursBinding.inflate(LayoutInflater.from(binding.root.context), binding.grid, false).apply {
                     tvSalle.text = cours.salle
-                    tvTitre.text = titre.first + (abbreviations.find { it.mod_lib == titre.second }?.mod_code ?: titre.second)
+                    tvTitre.text = abbreviations.find { it.mod_lib == cours.titre }?.mod_code ?: cours.titre
                     root.layoutParams = param
                 }
 

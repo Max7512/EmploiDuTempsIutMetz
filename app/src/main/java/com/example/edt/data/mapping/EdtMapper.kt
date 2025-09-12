@@ -30,6 +30,16 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                     dtStart?.let {
                         dtEnd?.let {
                             summary?.let {
+                                val summarySplit = summary.split(": ")
+                                val groupe = if (summarySplit.size > 1) {
+                                    summarySplit[0].split(" ").last().split(".").let {
+                                        try {
+                                            return@let Pair(it[0].toInt(), it[1].toInt())
+                                        } catch (e: Error) {
+                                            return@let null
+                                        }
+                                    }
+                                } else null
                                 var salle = location?.trim() ?: "Salle???"
                                 val ile = "Ile du Saulcy_"
                                 if (salle.startsWith(ile)) {
@@ -70,9 +80,10 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                                 edt.add(
                                     CoursEntity(
                                         uid,
-                                        summary.trim(),
+                                        summarySplit.last().trim(),
                                         salle,
                                         prof,
+                                        groupe,
                                         dtStart,
                                         dtEnd
                                     )

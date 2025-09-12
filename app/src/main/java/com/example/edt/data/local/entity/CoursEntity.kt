@@ -13,13 +13,14 @@ data class CoursEntity(
     var titre: String,
     var salle: String,
     var prof: String,
+    var groupe: Pair<Int, Int>?,
     var debut: Date,
     var fin: Date
 
     ) {
 
     override fun toString(): String {
-        return "CoursEntity(id='$id', titre=$titre, salle='$salle', prof='$prof', debut=$debut, fin=$fin)"
+        return "CoursEntity(id='$id', titre=$titre, salle='$salle', prof='$prof', groupe=$groupe, debut=$debut, fin=$fin)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -32,6 +33,7 @@ data class CoursEntity(
         if (titre != other.titre) return false
         if (salle != other.salle) return false
         if (prof != other.prof) return false
+        if (groupe != other.groupe) return false
         if (debut != other.debut) return false
         if (fin != other.fin) return false
 
@@ -43,6 +45,7 @@ data class CoursEntity(
         result = 31 * result + titre.hashCode()
         result = 31 * result + salle.hashCode()
         result = 31 * result + prof.hashCode()
+        result = 31 * result + groupe.hashCode()
         result = 31 * result + debut.hashCode()
         result = 31 * result + fin.hashCode()
         return result
@@ -53,6 +56,7 @@ data class CoursEntity(
         titre,
         salle,
         prof,
+        groupe,
         debut,
         fin
     )
