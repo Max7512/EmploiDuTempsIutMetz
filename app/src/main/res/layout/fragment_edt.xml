@@ -15,13 +15,26 @@
         android:gravity="center"
         android:background="@color/blue">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
         <Spinner
             android:id="@+id/spinnerPromo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:layout_marginVertical="10dp"
-            tools:listitem="@layout/spinner_promo"/>
+            tools:listitem="@layout/spinner_white"/>
+        <Spinner
+            android:id="@+id/spinnerGroupe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:layout_marginVertical="10dp"
+            tools:listitem="@layout/spinner_white"/>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

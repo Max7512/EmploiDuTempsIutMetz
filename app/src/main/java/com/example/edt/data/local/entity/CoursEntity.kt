@@ -13,7 +13,7 @@ data class CoursEntity(
     var titre: String,
     var salle: String,
     var prof: String,
-    var groupe: Pair<Int, Int>?,
+    var groupe: String,
     var debut: Date,
     var fin: Date
 

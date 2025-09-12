@@ -16,11 +16,11 @@ class EdtViewModel @Inject constructor(
     private val edtRepository: EdtRepository,
     private val abbreviationRepository: AbbreviationRepository,
 ) : ViewModel() {
-    private var _promo: String = ""
-    var promo: String get() = _promo
-        set(value) {
-            _promo = value
-        }
+    var promo: String = ""
+
+    var groupe: String = ""
+
+    var groupes: MutableList<String> = mutableListOf()
 
     private lateinit var _date: Date
     var date: Date get() = _date
@@ -41,6 +41,17 @@ class EdtViewModel @Inject constructor(
         _abbreviations = abbreviationRepository.getAbbreviation()
         _edt = edtRepository.getEdt(promo, date)
 
-        affichage.afficher(edt, abbreviations)
+        groupes.clear()
+        edt.map { it.groupe }.distinct().sorted().let { liste ->
+            groupes.addAll(liste.filter { groupe ->
+                !groupe.isEmpty() && liste.find {
+                    it.length >= groupe.length && it.substring(0, groupe.length) == groupe && it != groupe
+                } == null
+            })
+        }
+
+        if (!groupes.isEmpty()) groupe = groupes.first()
+
+        affichage.afficher(edt, abbreviations, groupe)
     }
 }

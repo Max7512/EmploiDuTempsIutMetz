@@ -36,6 +36,7 @@ class EdtFragment : BaseFragment() {
     )
 
     private lateinit var adapterPromo: ArrayAdapter<Promo>
+    private lateinit var adapterGroupe: ArrayAdapter<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,14 +53,13 @@ class EdtFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapterPromo = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, promoOptions)
+        adapterGroupe = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, viewModel.groupes)
         binding.spinnerPromo.apply {
             adapter = adapterPromo
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     viewModel.promo = promoOptions[position].code
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.refresh(affichage)
-                    }
+                    refreshPage()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -67,18 +67,35 @@ class EdtFragment : BaseFragment() {
             viewModel.promo = promoOptions[selectedItemPosition].code
         }
 
-        showProgressIndicator(true)
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.refresh(affichage)
-        }.invokeOnCompletion {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                showProgressIndicator(false)
+        binding.spinnerGroupe.apply {
+            adapter = adapterGroupe
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    viewModel.groupe = viewModel.groupes[position]
+                    refreshPage()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
+
+        refreshPage()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun refreshPage() {
+        showProgressIndicator(true)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.refresh(affichage)
+        }.invokeOnCompletion {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                adapterGroupe.notifyDataSetChanged()
+                showProgressIndicator(false)
+            }
+        }
     }
 }

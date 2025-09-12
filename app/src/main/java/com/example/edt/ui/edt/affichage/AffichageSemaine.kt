@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.allViews
+import androidx.core.view.children
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.edt.data.local.entity.AbbreviationEntity
 import com.example.edt.data.local.entity.CoursEntity
@@ -46,17 +47,11 @@ class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleSco
                 width = (columnWidth.toFloat() * density).toInt()
                 height = (rowHeight.toFloat() * density * rowSpan).toInt()
             }
-            val titre = cours.titre.split(": ").let {
-                if (it.size > 1) {
-                    Pair("${it[0]} : ", it[1])
-                } else {
-                    Pair("", it[0])
-                }
-            }
+            val titre = abbreviations.find { it.mod_lib == cours.titre }?.mod_code ?: cours.titre
             lifecycleScope.launch(Dispatchers.Main) {
                 val coursBinding = LayoutCoursBinding.inflate(LayoutInflater.from(binding.root.context), binding.grid, false).apply {
                     tvSalle.text = cours.salle
-                    tvTitre.text = abbreviations.find { it.mod_lib == cours.titre }?.mod_code ?: cours.titre
+                    tvTitre.text = titre
                     root.layoutParams = param
                 }
 
@@ -66,11 +61,16 @@ class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleSco
     }
 
     override fun effacer() {
-        binding.grid.allViews.forEach {
+        val casesAEnlever = mutableListOf<ConstraintLayout>()
+        binding.grid.children.forEach {
             if (it is ConstraintLayout)
-                lifecycleScope.launch(Dispatchers.Main) {
-                    binding.grid.removeView(it)
-                }
+                casesAEnlever.add(it)
+        }
+        lifecycleScope.launch(Dispatchers.Main) {
+            while (casesAEnlever.isNotEmpty()) {
+                binding.grid.removeView(casesAEnlever.first())
+                casesAEnlever.removeAt(0)
+            }
         }
     }
 }
