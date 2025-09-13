@@ -1,7 +1,6 @@
 package com.example.edt.ui.edt
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.edt.data.local.entity.AbbreviationEntity
 import com.example.edt.data.local.entity.CoursEntity
 import com.example.edt.data.local.entity.SessionEntity
@@ -11,8 +10,6 @@ import com.example.edt.data.repository.SessionRepository
 import com.example.edt.ui.edt.affichage.Affichage
 import com.example.edt.util.DateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 

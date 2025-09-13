@@ -7,7 +7,6 @@ import android.widget.GridLayout.LayoutParams
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.edt.R
@@ -26,7 +25,7 @@ class AffichageSemaine(
     private var density = 0f
     private val rowHeight = 30
     private val columnWidth = 60
-    private val heureColumnWidth = 18
+    private val heureColumnWidth = 20
     private val heureDebut = 8
     private val heureFin = 18
     override var binding = LayoutEdtSemaineBinding.inflate(inflater, parent, true).apply {

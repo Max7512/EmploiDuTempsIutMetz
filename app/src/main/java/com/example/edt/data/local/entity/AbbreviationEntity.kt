@@ -2,7 +2,6 @@ package com.example.edt.data.local.entity
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Entity
-import java.util.Date
 
 @Entity(
     tableName = "abbreviations",
