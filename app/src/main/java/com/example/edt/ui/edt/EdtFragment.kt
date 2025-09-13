@@ -61,6 +61,7 @@ class EdtFragment : BaseFragment() {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     viewModel.promo = promoOptions[position].code
+                    viewModel.groupe = ""
                     refreshPage()
                 }
 
@@ -73,8 +74,10 @@ class EdtFragment : BaseFragment() {
             adapter = adapterGroupe
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    viewModel.groupe = viewModel.groupes[position]
-                    refreshPage()
+                    if (viewModel.groupes[position] != viewModel.groupe) {
+                        viewModel.groupe = viewModel.groupes[position]
+                        refreshPage()
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -119,13 +122,17 @@ class EdtFragment : BaseFragment() {
     }
 
     fun refreshPage() {
-        changeDate()
         showProgressIndicator(true)
+        val groupeVide = viewModel.groupe.isEmpty()
+        changeDate()
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             viewModel.refresh(affichage)
         }.invokeOnCompletion {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                 adapterGroupe.notifyDataSetChanged()
+
+                if (groupeVide) binding.spinnerGroupe.setSelection(0)
+
                 binding.spinnerGroupe.visibility = if (adapterGroupe.isEmpty) View.GONE
                     else View.VISIBLE
                 showProgressIndicator(false)

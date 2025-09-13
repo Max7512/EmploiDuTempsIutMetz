@@ -14,16 +14,20 @@ abstract class Affichage(
     abstract fun afficherCours(cours: CoursEntity, abbreviations: List<AbbreviationEntity>)
     fun afficher(edt: List<CoursEntity>, abbreviations: List<AbbreviationEntity>, groupe: String) {
         effacer()
+        filtrerCoursParGroupe(edt, groupe).forEach { cours ->
+            afficherCours(cours, abbreviations)
+        }
+    }
+
+    fun filtrerCoursParGroupe(edt: List<CoursEntity>, groupe: String): List<CoursEntity> {
         val tabGroupeSelect = groupe.split(".")
-        edt.filter {
+        return edt.filter {
             it.groupe.split(".").let { tabGroupeCours ->
                 for (i in 0..<tabGroupeCours.size) {
                     if (tabGroupeCours[i].isNotEmpty() && tabGroupeCours[i] != tabGroupeSelect[i]) return@let false
                 }
                 return@let true
             }
-        }.forEach { cours ->
-            afficherCours(cours, abbreviations)
         }
     }
 }
