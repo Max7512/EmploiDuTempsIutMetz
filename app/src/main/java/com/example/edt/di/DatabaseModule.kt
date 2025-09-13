@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.edt.data.local.AppDatabase
 import com.example.edt.data.local.dao.AbbreviationDao
 import com.example.edt.data.local.dao.CoursDao
+import com.example.edt.data.local.dao.SessionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +29,7 @@ object DatabaseModule {
 
     @Provides
     fun provideAbbreviationDao(appDatabase: AppDatabase): AbbreviationDao = appDatabase.abbreviationDao()
+
+    @Provides
+    fun provideSessionDao(appDatabase: AppDatabase): SessionDao = appDatabase.sessionDao()
 }

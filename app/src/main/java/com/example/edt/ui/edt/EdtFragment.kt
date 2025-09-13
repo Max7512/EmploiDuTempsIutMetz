@@ -40,6 +40,8 @@ class EdtFragment : BaseFragment() {
     private lateinit var adapterPromo: ArrayAdapter<Promo>
     private lateinit var adapterGroupe: ArrayAdapter<String>
 
+    private var spinnerTrigger = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,14 +62,15 @@ class EdtFragment : BaseFragment() {
             adapter = adapterPromo
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    viewModel.promo = promoOptions[position].code
-                    viewModel.groupe = ""
-                    refreshPage()
+                    if (spinnerTrigger) {
+                        viewModel.promo = promoOptions[position].code
+                        viewModel.groupe = ""
+                        refreshPage()
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
-            viewModel.promo = promoOptions[selectedItemPosition].code
         }
 
         binding.spinnerGroupe.apply {
@@ -75,8 +78,10 @@ class EdtFragment : BaseFragment() {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     if (viewModel.groupes[position] != viewModel.groupe) {
-                        viewModel.groupe = viewModel.groupes[position]
-                        refreshPage()
+                        if (spinnerTrigger) {
+                            viewModel.groupe = viewModel.groupes[position]
+                            refreshPage()
+                        }
                     }
                 }
 
@@ -113,7 +118,17 @@ class EdtFragment : BaseFragment() {
             refreshPage()
         }
 
-        refreshPage()
+        showProgressIndicator(true)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val session = viewModel.chargeSession()
+
+            if (session == null) {
+                viewModel.promo = promoOptions[binding.spinnerPromo.selectedItemPosition].code
+            }
+        }.invokeOnCompletion {
+            binding.spinnerPromo.setSelection(promoOptions.indexOfFirst { it.code == viewModel.promo })
+            refreshPage()
+        }
     }
 
     override fun onDestroyView() {
@@ -132,10 +147,12 @@ class EdtFragment : BaseFragment() {
                 adapterGroupe.notifyDataSetChanged()
 
                 if (groupeVide) binding.spinnerGroupe.setSelection(0)
+                else binding.spinnerGroupe.setSelection(viewModel.groupes.indexOf(viewModel.groupe))
 
                 binding.spinnerGroupe.visibility = if (adapterGroupe.isEmpty) View.GONE
                     else View.VISIBLE
                 showProgressIndicator(false)
+                spinnerTrigger = true
             }
         }
     }

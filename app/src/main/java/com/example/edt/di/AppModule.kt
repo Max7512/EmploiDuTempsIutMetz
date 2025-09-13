@@ -6,11 +6,14 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import com.example.edt.data.local.dao.AbbreviationDao
 import com.example.edt.data.local.dao.CoursDao
+import com.example.edt.data.local.dao.SessionDao
 import com.example.edt.data.remote.ApiService
 import com.example.edt.data.repository.AbbreviationRepository
 import com.example.edt.data.repository.AbbreviationRepositoryImpl
 import com.example.edt.data.repository.EdtRepository
 import com.example.edt.data.repository.EdtRepositoryImpl
+import com.example.edt.data.repository.SessionRepository
+import com.example.edt.data.repository.SessionRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,5 +55,13 @@ object AppModule {
         AbbreviationRepositoryImpl(
             apiService,
             abbreviationDao
+        )
+
+    @Provides
+    fun provideSessionRepository(
+        sessionDao: SessionDao,
+    ): SessionRepository =
+        SessionRepositoryImpl(
+            sessionDao
         )
 }

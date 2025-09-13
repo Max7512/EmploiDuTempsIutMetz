@@ -1,13 +1,18 @@
 package com.example.edt.ui.edt
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.edt.data.local.entity.AbbreviationEntity
 import com.example.edt.data.local.entity.CoursEntity
+import com.example.edt.data.local.entity.SessionEntity
 import com.example.edt.data.repository.AbbreviationRepository
 import com.example.edt.data.repository.EdtRepository
+import com.example.edt.data.repository.SessionRepository
 import com.example.edt.ui.edt.affichage.Affichage
 import com.example.edt.util.DateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
@@ -15,6 +20,7 @@ import javax.inject.Inject
 class EdtViewModel @Inject constructor(
     private val edtRepository: EdtRepository,
     private val abbreviationRepository: AbbreviationRepository,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     var promo: String = ""
 
@@ -23,7 +29,8 @@ class EdtViewModel @Inject constructor(
     var groupes: MutableList<String> = mutableListOf()
 
     private var _date: Date = DateConverter.previousMonday(Date())
-    var date: Date get() = _date
+    var date: Date
+        get() = _date
         set(value) {
             _date = DateConverter.previousMonday(value)
         }
@@ -33,6 +40,9 @@ class EdtViewModel @Inject constructor(
 
     private lateinit var _abbreviations: List<AbbreviationEntity>
     val abbreviations: List<AbbreviationEntity> get() = _abbreviations
+
+    private lateinit var _session: SessionEntity
+    val session: SessionEntity get() = _session
     suspend fun refresh(affichage: Affichage) {
         _abbreviations = abbreviationRepository.getAbbreviation()
         _edt = edtRepository.getEdt(promo, date)
@@ -41,14 +51,37 @@ class EdtViewModel @Inject constructor(
         edt.map { it.groupe }.distinct().sorted().let { liste ->
             groupes.addAll(liste.filter { groupe ->
                 !groupe.isEmpty() && liste.find {
-                    it.length >= groupe.length && it.substring(0, groupe.length) == groupe && it != groupe
+                    it.length >= groupe.length && it.substring(
+                        0,
+                        groupe.length
+                    ) == groupe && it != groupe
                 } == null
             })
         }
 
         if (!groupes.isEmpty() && groupe.isEmpty()) groupe = groupes.first()
 
+        session.promo = promo
+        session.groupe = groupe
+        saveSession()
+
         affichage.afficher(edt, abbreviations, groupe)
+    }
+
+    suspend fun chargeSession(): SessionEntity? {
+        val session = sessionRepository.getSession()
+        if (session != null) {
+            _session = session
+            promo = session.promo
+            groupe = session.groupe
+        } else {
+            _session = SessionEntity(promo, groupe)
+        }
+        return session
+    }
+
+    suspend fun saveSession() {
+        sessionRepository.saveSession(session)
     }
 
     fun nextWeek() {

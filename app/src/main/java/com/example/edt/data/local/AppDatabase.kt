@@ -6,14 +6,17 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.example.edt.data.local.dao.AbbreviationDao
 import com.example.edt.data.local.dao.CoursDao
+import com.example.edt.data.local.dao.SessionDao
 import com.example.edt.data.local.entity.AbbreviationEntity
 import com.example.edt.data.local.entity.CoursEntity
+import com.example.edt.data.local.entity.SessionEntity
 import java.util.Date
 
 @Database(
     entities = [
         CoursEntity::class,
-        AbbreviationEntity::class
+        AbbreviationEntity::class,
+        SessionEntity::class
     ],
     autoMigrations = [],
     version = AppDatabase.DB_VERSION,
@@ -23,6 +26,7 @@ import java.util.Date
 abstract class AppDatabase : RoomDatabase() {
     abstract fun coursDao(): CoursDao
     abstract fun abbreviationDao(): AbbreviationDao
+    abstract fun sessionDao(): SessionDao
     companion object {
         const val DB_VERSION: Int = 1
         const val DB_NAME = "AppDatabase"

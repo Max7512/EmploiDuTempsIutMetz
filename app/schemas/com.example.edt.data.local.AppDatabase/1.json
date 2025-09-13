@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8ed553c51bdd27a22d668919e9ad6fef",
+    "identityHash": "f27449dc734696317c76f137fefcf3c9",
     "entities": [
       {
         "tableName": "cours",
@@ -91,12 +91,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "session",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`promo` TEXT NOT NULL, `groupe` TEXT NOT NULL, PRIMARY KEY(`promo`))",
+        "fields": [
+          {
+            "fieldPath": "promo",
+            "columnName": "promo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupe",
+            "columnName": "groupe",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "promo"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8ed553c51bdd27a22d668919e9ad6fef')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f27449dc734696317c76f137fefcf3c9')"
     ]
   }
 }
