@@ -14,8 +14,10 @@ import com.example.edt.databinding.FragmentEdtBinding
 import com.example.edt.ui.BaseFragment
 import com.example.edt.ui.edt.affichage.Affichage
 import com.example.edt.ui.edt.affichage.AffichageSemaine
+import com.example.edt.util.DateConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 import kotlin.getValue
 
 class EdtFragment : BaseFragment() {
@@ -24,8 +26,8 @@ class EdtFragment : BaseFragment() {
     private var _binding: FragmentEdtBinding? = null
     val binding get() = _binding!!
 
-    private var _affichage: Affichage? = null
-    val affichage get() = _affichage!!
+    private lateinit var _affichage: Affichage
+    val affichage get() = _affichage
 
     private val promoOptions = listOf(
         Promo("but1", "BUT 1"),
@@ -79,6 +81,16 @@ class EdtFragment : BaseFragment() {
             }
         }
 
+        binding.ibLeft.setOnClickListener {
+            viewModel.previousWeek()
+            refreshPage()
+        }
+
+        binding.ibRight.setOnClickListener {
+            viewModel.nextWeek()
+            refreshPage()
+        }
+
         refreshPage()
     }
 
@@ -88,14 +100,21 @@ class EdtFragment : BaseFragment() {
     }
 
     fun refreshPage() {
+        changeDate()
         showProgressIndicator(true)
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             viewModel.refresh(affichage)
         }.invokeOnCompletion {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                 adapterGroupe.notifyDataSetChanged()
+                binding.spinnerGroupe.visibility = if (adapterGroupe.isEmpty) View.GONE
+                    else View.VISIBLE
                 showProgressIndicator(false)
             }
         }
+    }
+
+    fun changeDate() {
+        binding.tvRange.text = DateConverter.weekToString(viewModel.date)
     }
 }

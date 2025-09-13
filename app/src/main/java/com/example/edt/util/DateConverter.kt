@@ -39,4 +39,10 @@ object DateConverter {
     fun fromLocal(date: Date): String {
         return "${date.year + 1900}-${date.month + 1}-${date.date}"
     }
+
+    fun weekToString(date: Date): String {
+        val previousMonday = previousMonday(date)
+        val nextSaturday = nextSunday(date).apply { this.date-- }
+        return "${previousMonday.date}/${previousMonday.month + 1} - ${nextSaturday.date}/${nextSaturday.month + 1}"
+    }
 }

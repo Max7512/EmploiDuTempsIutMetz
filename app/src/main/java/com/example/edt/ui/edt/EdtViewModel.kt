@@ -22,7 +22,7 @@ class EdtViewModel @Inject constructor(
 
     var groupes: MutableList<String> = mutableListOf()
 
-    private lateinit var _date: Date
+    private var _date: Date = DateConverter.previousMonday(Date())
     var date: Date get() = _date
         set(value) {
             _date = DateConverter.previousMonday(value)
@@ -33,10 +33,6 @@ class EdtViewModel @Inject constructor(
 
     private lateinit var _abbreviations: List<AbbreviationEntity>
     val abbreviations: List<AbbreviationEntity> get() = _abbreviations
-
-    init {
-        date = Date()
-    }
     suspend fun refresh(affichage: Affichage) {
         _abbreviations = abbreviationRepository.getAbbreviation()
         _edt = edtRepository.getEdt(promo, date)
@@ -53,5 +49,13 @@ class EdtViewModel @Inject constructor(
         if (!groupes.isEmpty() && groupe.isEmpty()) groupe = groupes.first()
 
         affichage.afficher(edt, abbreviations, groupe)
+    }
+
+    fun nextWeek() {
+        date = date.apply { date += 7 }
+    }
+
+    fun previousWeek() {
+        date = date.apply { date -= 7 }
     }
 }
