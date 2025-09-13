@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.lifecycle.LifecycleCoroutineScope
+import com.example.edt.R
 import com.example.edt.data.local.entity.AbbreviationEntity
 import com.example.edt.data.local.entity.CoursEntity
 import com.example.edt.databinding.LayoutCoursBinding
@@ -17,20 +18,49 @@ import com.example.edt.databinding.LayoutEdtSemaineBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleScope: LifecycleCoroutineScope): Affichage(lifecycleScope) {
+class AffichageSemaine(
+    inflater: LayoutInflater,
+    parent: ViewGroup,
+    lifecycleScope: LifecycleCoroutineScope
+) : Affichage(lifecycleScope) {
     private var density = 0f
     private val rowHeight = 30
     private val columnWidth = 60
+    private val heureColumnWidth = 18
+    private val heureDebut = 8
+    private val heureFin = 18
     override var binding = LayoutEdtSemaineBinding.inflate(inflater, parent, true).apply {
-        density = root.context.resources.displayMetrics.density
-        grid.allViews.forEach {
-            if (it is LinearLayout) {
-                if (it.tag == "day") {
-                    it.layoutParams.width = (columnWidth.toFloat() * density).toInt()
-                } else {
-                    it.layoutParams.height = (rowHeight.toFloat() * density).toInt()
-                }
+        val context = root.context
+        density = context.resources.displayMetrics.density
+        grid.children.forEach {
+            it.layoutParams.width = (columnWidth.toFloat() * density).toInt()
+        }
+
+        for (i in heureDebut..heureFin) {
+            val row = (i - heureDebut) * 2 + 1
+
+            val textView = TextView(grid.context)
+            textView.text = i.toString()
+            textView.setTextColor(context.getColor(R.color.white))
+            textView.layoutParams = LayoutParams().apply {
+                rowSpec = GridLayout.spec(row, 1)
+                columnSpec = GridLayout.spec(0, 1)
+                width = (heureColumnWidth.toFloat() * density).toInt()
+                height = (rowHeight.toFloat() * density).toInt()
             }
+
+            grid.addView(textView)
+
+            val linearLayout = LinearLayout(grid.context)
+            linearLayout.background = context.getDrawable(R.color.darkBackground)
+            linearLayout.layoutParams = LayoutParams().apply {
+                rowSpec = GridLayout.spec(row + 1, 1)
+                columnSpec = GridLayout.spec(0, 1)
+                width = (heureColumnWidth.toFloat() * density).toInt()
+                height = (rowHeight.toFloat() * density).toInt()
+            }
+
+            grid.addView(linearLayout)
         }
     }
 
@@ -42,14 +72,18 @@ class AffichageSemaine(inflater: LayoutInflater, parent: ViewGroup, lifecycleSco
             val rowSpan = heureFin - heureDebut
             val row = heureDebut - 11
             val param = LayoutParams().apply {
-                rowSpec = GridLayout.spec(row,rowSpan)
-                columnSpec = GridLayout.spec(jour,0)
+                rowSpec = GridLayout.spec(row, rowSpan)
+                columnSpec = GridLayout.spec(jour, 1)
                 width = (columnWidth.toFloat() * density).toInt()
                 height = (rowHeight.toFloat() * density * rowSpan).toInt()
             }
             val titre = abbreviations.find { it.mod_lib == cours.titre }?.mod_code ?: cours.titre
             lifecycleScope.launch(Dispatchers.Main) {
-                val coursBinding = LayoutCoursBinding.inflate(LayoutInflater.from(binding.root.context), binding.grid, false).apply {
+                val coursBinding = LayoutCoursBinding.inflate(
+                    LayoutInflater.from(binding.root.context),
+                    binding.grid,
+                    false
+                ).apply {
                     tvSalle.text = cours.salle
                     tvTitre.text = titre
                     root.layoutParams = param

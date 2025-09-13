@@ -50,7 +50,7 @@ class EdtViewModel @Inject constructor(
             })
         }
 
-        if (!groupes.isEmpty()) groupe = groupes.first()
+        if (!groupes.isEmpty() && groupe.isEmpty()) groupe = groupes.first()
 
         affichage.afficher(edt, abbreviations, groupe)
     }

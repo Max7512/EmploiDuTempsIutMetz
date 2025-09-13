@@ -18,7 +18,7 @@ abstract class Affichage(
         edt.filter {
             it.groupe.split(".").let { tabGroupeCours ->
                 for (i in 0..<tabGroupeCours.size) {
-                    if (tabGroupeSelect.size > i && tabGroupeSelect[i] != tabGroupeCours[i] && tabGroupeSelect[i] != "") return@let false
+                    if (tabGroupeCours[i].isNotEmpty() && tabGroupeCours[i] != tabGroupeSelect[i]) return@let false
                 }
                 return@let true
             }
