@@ -7,4 +7,6 @@
     <string name="vendredi">Vendredi</string>
     <string name="samedi">Samedi</string>
     <string name="err_connection">Pas de connexion internet</string>
+    <string name="min_date_calendar">09/01/2025</string>
+    <string name="max_date_calendar">08/31/2026</string>
 </resources>

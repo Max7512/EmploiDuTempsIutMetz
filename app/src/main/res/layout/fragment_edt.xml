@@ -1,98 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.edt.EdtFragment"
+    android:background="@color/darkBackground"
     android:orientation="vertical"
-    android:background="@color/darkBackground">
+    tools:context=".ui.edt.EdtFragment">
 
     <LinearLayout
+        android:id="@+id/llMainEdt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@color/blue">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-        <Spinner
-            android:id="@+id/spinnerPromo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:layout_marginVertical="10dp"
-            tools:listitem="@layout/spinner_white"/>
-        <Spinner
-            android:id="@+id/spinnerGroupe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:layout_marginVertical="10dp"
-            tools:listitem="@layout/spinner_white"/>
+            android:background="@color/blue"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinnerPromo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:backgroundTint="@color/white"
+                    tools:listitem="@layout/spinner_white" />
+
+                <Spinner
+                    android:id="@+id/spinnerGroupe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:backgroundTint="@color/white"
+                    tools:listitem="@layout/spinner_white" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/ibCalendar"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_event"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <ImageButton
+                    android:id="@+id/ibLeft"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="75dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_arrow_left"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ibCalendar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tvRange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="08/09 - 13/09"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/ibRight"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="75dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="50dp"
+                    android:rotationY="180"
+                    android:src="@drawable/ic_arrow_left"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollEdt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/ibCalendar"
-                android:layout_width="50dp"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:src="@drawable/ic_event"
-                app:tint="@color/white" />
-
-            <ImageButton
-                android:id="@+id/ibLeft"
-                android:layout_width="75dp"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toEndOf="@id/ibCalendar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:src="@drawable/ic_arrow_left"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/tvRange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="08/09 - 13/09"
-                android:textColor="@color/white"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <ImageButton
-                android:id="@+id/ibRight"
-                android:layout_width="75dp"
-                android:layout_height="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="50dp"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:src="@drawable/ic_arrow_left"
-                app:tint="@color/white"
-                android:rotationY="180"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCalendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollEdt">
+        android:background="@color/black_transparent">
 
-    </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/ibCancel"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_cancel"
+            app:layout_constraintBottom_toTopOf="@id/calendar"
+            app:layout_constraintEnd_toEndOf="@id/calendar"
+            app:tint="@color/white" />
+
+        <CalendarView
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/darkBackground"
+            android:dateTextAppearance="@style/CalenderViewDateCustomText"
+            android:maxDate="@string/max_date_calendar"
+            android:minDate="@string/min_date_calendar"
+            android:theme="@style/CalenderViewCustom"
+            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

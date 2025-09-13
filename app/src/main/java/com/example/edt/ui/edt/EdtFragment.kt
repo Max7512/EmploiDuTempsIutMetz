@@ -91,6 +91,25 @@ class EdtFragment : BaseFragment() {
             refreshPage()
         }
 
+        binding.ibCalendar.setOnClickListener {
+            binding.clCalendar.visibility = View.VISIBLE
+        }
+
+        binding.ibCancel.setOnClickListener {
+            binding.clCalendar.visibility = View.GONE
+        }
+
+        binding.clCalendar.setOnClickListener {
+            binding.clCalendar.visibility = View.GONE
+        }
+
+        binding.calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            viewModel.date = Date(year - 1900, month, dayOfMonth)
+            changeDate()
+            binding.clCalendar.visibility = View.GONE
+            refreshPage()
+        }
+
         refreshPage()
     }
 
