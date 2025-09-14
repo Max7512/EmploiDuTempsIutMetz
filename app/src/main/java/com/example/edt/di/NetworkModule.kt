@@ -13,11 +13,28 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import javax.inject.Singleton
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+
 
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
+    var TRUST_ALL_CERTS: TrustManager = object : X509TrustManager {
+        override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+        }
+
+        override fun checkServerTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+        }
+
+        override fun getAcceptedIssuers(): Array<X509Certificate?> {
+            return arrayOf()
+        }
+    }
     @Singleton
     @Provides
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
@@ -40,10 +57,15 @@ object NetworkModule {
     @Provides
     fun provideOkClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
-    ): OkHttpClient =
-        OkHttpClient.Builder()
+    ): OkHttpClient {
+        val sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, arrayOf(TRUST_ALL_CERTS), SecureRandom())
+
+        return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .sslSocketFactory(sslContext.socketFactory, TRUST_ALL_CERTS as X509TrustManager)
             .build()
+    }
 
     @Singleton
     @Provides
