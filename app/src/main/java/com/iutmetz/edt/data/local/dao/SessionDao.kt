@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.iutmetz.edt.data.local.entity.SessionEntity
 
 @Dao
-abstract class SessionDao() {
+abstract class SessionDao() { // cette classe sert à gérer la session dans la base de données locale
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(session: SessionEntity)
 

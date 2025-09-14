@@ -4,7 +4,7 @@ import com.iutmetz.edt.data.local.entity.CoursEntity
 import com.iutmetz.edt.util.DateConverter
 
 object EdtMapper: Mapper<List<CoursEntity>, String> {
-    override fun fromRemote(r: String): List<CoursEntity> {
+    override fun fromRemote(r: String): List<CoursEntity> { // la conversion de la réponse serveur en chaine de caractère en un tableau de CoursEntity (local)
         val edt = mutableListOf<CoursEntity>()
         val vevents = r.split("BEGIN:VEVENT").toMutableList()
         vevents.removeAt(0)

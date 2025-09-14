@@ -1,10 +1,6 @@
 package com.iutmetz.edt.data.common
 
-/**
- * A generic class that holds a value with its loading status.
- * @param <T>
- */
-data class Result<out T>(
+data class Result<out T>( // cette classe sert à mettre en forme les réponses de l'API
     val status: Status,
     val data: T?,
     val error: Error? = null,

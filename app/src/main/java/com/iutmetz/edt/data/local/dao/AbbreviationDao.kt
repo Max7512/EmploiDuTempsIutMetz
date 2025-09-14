@@ -9,7 +9,7 @@ import androidx.room.Transaction
 import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 
 @Dao
-abstract class AbbreviationDao() {
+abstract class AbbreviationDao() { // cette classe sert à gérer les abbreviations dans la base de données locale
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(abbreviations: AbbreviationEntity)
 

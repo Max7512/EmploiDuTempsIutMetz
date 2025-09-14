@@ -10,7 +10,7 @@ import com.iutmetz.edt.data.local.entity.CoursEntity
 import java.util.Date
 
 @Dao
-abstract class CoursDao() {
+abstract class CoursDao() { // cette classe sert à gérer les cours dans la base de données locale
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(cours: CoursEntity)
 

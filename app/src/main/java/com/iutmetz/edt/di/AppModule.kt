@@ -23,10 +23,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
-    @Singleton
-    @Provides
-    fun provideVibration(@ApplicationContext context: Context): Vibrator {
+object AppModule { // ce module permet de définir les différents objets nécessaires pour l'application et de les injecter dans les classes qui les utilisent
+    @Singleton // cette annotation permet de définir un objet singleton qui sera partagé par toutes les classes qui l'utilisent
+    @Provides // cette annotation permet de définir une fonction qui sera appelée par dagger pour créer un objet
+    fun provideVibration(@ApplicationContext context: Context): Vibrator { // cette fonction permet de récupérer le service Vibrator de l'appareil, il est utilisé dans le BaseFragment pour la fonction vibrate
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             @Suppress("DEPRECATION")
             return context.applicationContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -37,31 +37,31 @@ object AppModule {
         }
     }
 
-    @Provides
-    fun provideEdtRepository(
-        apiService: ApiService,
+    @Provides // cette annotation permet de définir une fonction qui sera appelée par dagger pour créer un objet
+    fun provideEdtRepository( // cette fonction permet de créer un objet EdtRepositoryImpl qui implémentera l'interface EdtRepository
+        apiService: ApiService, // on définit les objets nécessaires pour le repository
         coursDao: CoursDao,
     ): EdtRepository =
-        EdtRepositoryImpl(
+        EdtRepositoryImpl( // on retourne un objet EdtRepositoryImpl avec les objets nécessaires
             apiService,
             coursDao
         )
 
-    @Provides
-    fun provideAbbreviationRepository(
-        apiService: ApiService,
+    @Provides // cette annotation permet de définir une fonction qui sera appelée par dagger pour créer un objet
+    fun provideAbbreviationRepository( // cette fonction permet de créer un objet AbbreviationRepositoryImpl qui implémentera l'interface AbbreviationRepository
+        apiService: ApiService, // on définit les objets nécessaires pour le repository
         abbreviationDao: AbbreviationDao,
     ): AbbreviationRepository =
-        AbbreviationRepositoryImpl(
+        AbbreviationRepositoryImpl( // on retourne un objet AbbreviationRepositoryImpl avec les objets nécessaires
             apiService,
             abbreviationDao
         )
 
-    @Provides
-    fun provideSessionRepository(
-        sessionDao: SessionDao,
+    @Provides // cette annotation permet de définir une fonction qui sera appelée par dagger pour créer un objet
+    fun provideSessionRepository( // cette fonction permet de créer un objet SessionRepositoryImpl qui implémentera l'interface SessionRepository
+        sessionDao: SessionDao, // on définit les objets nécessaires pour le repository
     ): SessionRepository =
-        SessionRepositoryImpl(
+        SessionRepositoryImpl( // on retourne un objet SessionRepositoryImpl avec les objets nécessaires
             sessionDao
         )
 }

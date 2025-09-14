@@ -3,10 +3,10 @@ package com.iutmetz.edt.data.local.entity
 import androidx.room.Entity
 
 @Entity(
-    tableName = "session",
-    primaryKeys = ["promo"]
+    tableName = "session", // on définit la table de la base de données
+    primaryKeys = ["promo"] // on définit la clé primaire de la table
 )
-data class SessionEntity(
+data class SessionEntity( // cette classe correspond au modèle de données des sessions dans la base de données locale
     var promo: String,
     var groupe: String,
 

@@ -5,8 +5,8 @@ import androidx.room.Entity
 import java.util.Date
 
 @Entity(
-    tableName = "cours",
-    primaryKeys = ["id"],
+    tableName = "cours", // on définit la table de la base de données
+    primaryKeys = ["id"], // on définit la clé primaire de la table
 )
 data class CoursEntity(
     val id: String,

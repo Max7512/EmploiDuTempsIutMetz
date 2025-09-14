@@ -4,10 +4,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Entity
 
 @Entity(
-    tableName = "abbreviations",
-    primaryKeys = ["id"],
+    tableName = "abbreviations", // on définit la table de la base de données
+    primaryKeys = ["id"], // on définit la clé primaire de la table
 )
-data class AbbreviationEntity(
+data class AbbreviationEntity( // cette classe correspond au modèle de données des abbreviations dans la base de données locale
     val id: String,
     var mod_lib: String,
     var mod_code: String,
