@@ -11,15 +11,15 @@ val productionBaseUrl = "\"https://dptinfo.iutmetz.univ-lorraine.fr/applis/edt/s
 val developmentBaseUrl = "\"https://dptinfo.iutmetz.univ-lorraine.fr/applis/edt/serveur/\""
 
 android {
-    namespace = "com.example.edt"
+    namespace = "com.iutmetz.edt"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.edt"
+        applicationId = "com.iutmetz.edt"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

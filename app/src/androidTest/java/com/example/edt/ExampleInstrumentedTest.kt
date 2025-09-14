@@ -1,4 +1,4 @@
-package com.example.facture
+package com.iutmetz.facture
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
