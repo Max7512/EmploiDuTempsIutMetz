@@ -2,9 +2,10 @@ package com.iutmetz.edt.data.mapping
 
 import com.iutmetz.edt.data.local.entity.CoursEntity
 import com.iutmetz.edt.util.DateConverter
+import kotlin.math.floor
 
 object EdtMapper: Mapper<List<CoursEntity>, String> {
-    override fun fromRemote(r: String): List<CoursEntity> { // la conversion de la réponse serveur en chaine de caractère en un tableau de CoursEntity (local)
+    override fun fromRemote(r: String): List<CoursEntity> { // la conversion de la réponse serveur en chaine de caractère en un tableau de CoursEntity (local), le code est tiré de l'appli web réalisée par le département
         val edt = mutableListOf<CoursEntity>()
         val vevents = r.split("BEGIN:VEVENT").toMutableList()
         vevents.removeAt(0)
@@ -31,9 +32,7 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                         dtEnd?.let {
                             summary?.let {
                                 val summarySplit = summary.split(": ")
-                                val groupe = if (summarySplit.size > 1) {
-                                    summarySplit[0].split(" ").last().trim()
-                                } else ""
+                                val groupe = extraitGroupe(summarySplit, summary)
                                 var salle = location?.trim() ?: "Salle???"
                                 val ile = "Ile du Saulcy_"
                                 if (salle.startsWith(ile)) {
@@ -116,5 +115,42 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
             return "$initiale $nom"
         }
         return retour
+    }
+
+    fun extraitGroupe(summarySplit: List<String>, summary: String): String {
+        return if (summarySplit.size > 1) {
+            val tabGroupe = summarySplit[0].split(" ").toMutableList()
+            val groupe = tabGroupe.last().trim() // on récupère le dernier élément du tableau qui est le groupe ou dans le cas du but 2 DACS ou RA
+            if (groupe == "DACS" || groupe == "RA") { // cas des groupes DACS et RA qui deviendront par exemple RA.3
+                groupeBUT2(summary)
+            } else {
+                groupe // dans le cas des autres groupes on retourne juste le groupe qui est de la forme X ou X.X
+            }
+        } else ""
+    }
+
+    fun groupeBUT2(summary: String): String { // traitement spécial pour les groupes BUT2 à cause de leur forme unique, tiré du site web de l'IUT
+        val match = Regex("(EI|TD|TP)\\s*(\\d+)").find(summary)
+        var groupeTP: Int
+        var groupeNum: Int
+
+        if (match != null) {
+            //console.log(match)
+            if (match.groupValues[1] == "TP") {
+                val arrondi = floor(match.groupValues[2].toDouble() / 2)
+                if (arrondi == match.groupValues[2].toDouble() / 2) {
+                    groupeNum = arrondi.toInt()
+                    groupeTP = 2
+                } else {
+                    groupeNum = arrondi.toInt() + 1
+                    groupeTP = 1
+                }
+                return "$groupeNum.$groupeTP"
+            } else {
+                return match.groupValues[2].toInt().toString() // dans le cas des TD et CM on retourne juste le numéro de groupe en se débarrassant d'éventuels 0 au début
+            }
+        } else {
+            return ""
+        }
     }
 }

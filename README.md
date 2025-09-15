@@ -1,3 +1,7 @@
+# Attention
+
+Il n'est pas impossible que l'application rencontre un problème et n'affiche pas certaines informations importantes, en utilisant cette application vous acceptez le risque de rater des cours et êtes responsable de vos absences. Si vous partagez l'application, vous devez les avertir également car vous pourrez être responsable.
+
 # Contribuer à l'application emploi du temps
 
 Ce projet est open source et peut servir de projet d'initiation au développement mobile avec Kotlin. 
