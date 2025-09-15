@@ -3,13 +3,13 @@
 Ce projet est open source et peut servir de projet d'initiation au développement mobile avec Kotlin. 
 Pour contribuer à ce projet, vous devez d'abord fork le projet sur GitHub, cela vous permettra d'avoir une copie du projet sur votre compte que vous pourrez modifier.
 
-Lorsque vous voulez ajouter des fonctionnalités ou modifier un partie du code il est recommandé de créer une nouvelle branche avec le nom du changement. Une fois la fonctionnalité prête, faites une pull request de cette branche sur la branche dévelopement du projet original, cela aura pour effet de commencer une procédure qui permettra à tout le monde de tester vos changements et d'en discuter. Si tout se déroule bien, les commits de cette branche seront apportés à la branche développement.
+Lorsque vous voulez ajouter des fonctionnalités ou modifier un partie du code il est recommandé de créer une nouvelle branche avec le nom du changement. Une fois la fonctionnalité prête, faites une pull request de cette branche sur la branche développement du projet original, cela aura pour effet de commencer une procédure qui permettra à tout le monde de tester vos changements et d'en discuter. Si tout se déroule bien, les commits de cette branche seront apportés à la branche développement.
 
 Pour le développement de cette application, il est recommandé d'utiliser Android Studio, la suite de cette documentation est destinée aux développeurs utilisant Android Studio.
 
 ## Structure de l'application
 
-L'application est répartie en plusieurs parties distinctes qui ont différentes utilités et formats, cette partie est dédiées à résumer leurs usages et comment interagir avec ces parties.
+L'application est répartie en plusieurs parties distinctes qui ont différentes utilités et formats, cette section est dédiée à résumer leurs usages et comment interagir avec ces parties.
 
 ### Configuration (Gradle Scripts)
 
@@ -30,7 +30,7 @@ Il est possible d'utiliser l'option clip art qui permet de génerer une icône g
 
 Ce dossier regroupe toutes les structures des fragments qui agissent comme des pages, ainsi que des structure d'autres éléments pouvant être générés au sein des pages.
 
-Pour ajouter des layouts suivez la même méthode que pour une icône mais sélectionnez Android resource file et choisissez layout dans le type de ressource et définissez un élément racine. La structure est très similaire à du HTML mais les éléments ne sont pas les mêmes, vous devrez vous inspirer des layouts déjà présents et essayer de nouveaux éléments qui pourraient correspondre au besoin.
+Pour ajouter des layouts suivez la même méthode que pour une icône mais sélectionnez Android resource file, choisissez layout dans le type de ressource et définissez un élément racine. La structure est très similaire à du HTML mais les éléments ne sont pas les mêmes, vous devrez vous inspirer des layouts déjà présents et essayer de nouveaux éléments qui pourraient correspondre au besoin.
 
 A noter que toute taille exprimée en dp (density pixels) sera automatiquement ajustée en fonction de l'appareil.
 
@@ -41,7 +41,7 @@ Ce fichier n'est pas nécessaire pour le moment mais n'hésitez pas à demander 
 
 #### Values
 
-Les fichiers contenus dans ce dossier agissent comme constantes que ce soit des couleurs ou des chaîne de caractères. Ces sont utilisées dans les layouts par exemple.
+Les fichiers contenus dans ce dossier agissent comme constantes que ce soit des couleurs ou des chaîne de caractères. Ces valeurs sont utilisées dans les layouts par exemple.
 
 ### Fichiers de code
 
@@ -53,11 +53,11 @@ Cette partie sert à définir les éléments de la base de données locale, le m
 
 #### Di
 
-Cette partie contient les modules qui mettent à disposition des objets grâce au plugin dagger qui injecte automatiquement des classes depuis la fonction définit dans les modules.
+Cette partie contient les modules qui mettent à disposition des objets grâce au plugin dagger qui injecte automatiquement des classes depuis la fonction correspondante définie dans les modules.
 
 #### Ui
 
-Ce dossier contient tout le code reliés au différentes pages, pour créer une nouvelle page copiez seulement le code déjà présent et inspirez vous de la forme et changez le fonctionnement du fragment. Il n'est pas nécessaire de modifier les fichiers BaseFragment et MainActivity.
+Ce dossier contient tout le code relié aux différentes pages, pour créer une nouvelle page copiez seulement le code déjà présent, inspirez vous de la forme et changez le fonctionnement du fragment. Il n'est pas nécessaire de modifier les fichiers BaseFragment et MainActivity.
 
 #### Util
 
@@ -65,8 +65,8 @@ Cette partie regroupe des objets qui servent dans certains cas, comme mettre à 
 
 ## Lancer/Tester l'application
 
-Pour lancer l'application, il faut d'abord sélectionner la variantes voulue dans le menu de gauche > ... > Build Variant. Il devrait y avoir development/production debug/release, sélectionnez developmentDebug pour utiliser les variables de développements et permettre le debuggage, sinon productionRelease pour les valeurs de production sans débuggage.
+Pour lancer l'application, il faut d'abord sélectionner la variantes voulue dans le menu de gauche > ... > Build Variant. Il devrait y avoir development/production debug/release, sélectionnez developmentDebug pour utiliser les variables de développement et permettre le debuggage, sinon productionRelease pour les valeurs de production sans debuggage.
 
 Ensuite, si vous avez sélectionné une variante debug vous pouvez démarrer l'app grâce au bouton debug en haut de la fenêtre, sinon pour la variante productionRelease il vous faudra générer un APK (build > generate signed app bundle or APKs) ou lancer l'application sans debug.
 
-Il est conseillé d'utiliser un téléphone liée à l'application car l'émulateur consomme beaucoup de ressources.
+Il est conseillé d'utiliser un téléphone lié à l'application car l'émulateur consomme beaucoup de ressources.
