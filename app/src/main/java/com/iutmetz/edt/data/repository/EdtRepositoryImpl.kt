@@ -36,16 +36,16 @@ class EdtRepositoryImpl(
             mutableListOf<CoursEntity>() // on initialise une liste des cours en format local
 
         if (result.status == Result.Status.SUCCESS) { // si la réponse est valide on récupère les abbréviations et on les insère dans la base de données locale
-            coursDao.deleteRange(dateDeb, dateFin)
+            coursDao.deleteRange(dateDeb, dateFin) // la base de données locale est vidée dans la plage de date pour être mise à jour
 
-            edt.addAll(EdtMapper.fromRemote(result.data!!))
+            edt.addAll(EdtMapper.fromRemote(result.data!!)) // on convertit les données du serveur en coursEntity et on les ajoute à la liste des cours
 
             edt.forEach {
-                coursDao.insert(it)
+                coursDao.insert(it) // les cours sont réinsérés dans la base de données locale
             }
         } else {
-            edt.addAll(coursDao.getEdtRange(dateDeb, dateFin))
+            edt.addAll(coursDao.getEdtRange(dateDeb, dateFin)) // sinon on récupère les cours de la base de données locale
         }
-        return Result(result.status, edt, result.error, result.message)
+        return Result(result.status, edt, result.error, result.message) // on retourne la réponse du serveur formatée
     }
 }

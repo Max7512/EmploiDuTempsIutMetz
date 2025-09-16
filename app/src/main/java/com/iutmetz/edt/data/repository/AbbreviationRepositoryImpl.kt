@@ -36,8 +36,8 @@ class AbbreviationRepositoryImpl(
                 abbreviationDao.insert(abbreviation) // les abbréviations sont réinsérées dans la base de données locale
             }
         } else {
-            abbreviations.addAll(abbreviationDao.getAll())
+            abbreviations.addAll(abbreviationDao.getAll()) // sinon on récupère les abbréviations de la base de données locale
         }
-        return Result(result.status, abbreviations, result.error, result.message)
+        return Result(result.status, abbreviations, result.error, result.message) // on retourne la réponse du serveur formatée
     }
 }

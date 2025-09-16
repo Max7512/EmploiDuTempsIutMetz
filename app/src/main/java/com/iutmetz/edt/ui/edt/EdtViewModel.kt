@@ -47,7 +47,7 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
         val resultAbbreviation = abbreviationRepository.getAbbreviation(retrofit) // on charge les abbreviations et les cours
         val resultEdt = edtRepository.getEdt(promo, date, retrofit)
 
-        _abbreviations = resultAbbreviation.data!! // on charge les abbreviations et les cours
+        _abbreviations = resultAbbreviation.data!! // on récupère les abbreviations et les cours
         _edt = resultEdt.data!!
 
         groupes.clear() // on vide la liste des groupes
