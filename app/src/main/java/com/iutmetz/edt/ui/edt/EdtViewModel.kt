@@ -1,6 +1,7 @@
 package com.iutmetz.edt.ui.edt
 
 import androidx.lifecycle.ViewModel
+import com.iutmetz.edt.data.common.Result
 import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 import com.iutmetz.edt.data.local.entity.CoursEntity
 import com.iutmetz.edt.data.local.entity.SessionEntity
@@ -10,6 +11,7 @@ import com.iutmetz.edt.data.repository.SessionRepository
 import com.iutmetz.edt.ui.edt.affichage.Affichage
 import com.iutmetz.edt.util.DateConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import retrofit2.Retrofit
 import java.util.Date
 import javax.inject.Inject
 
@@ -17,7 +19,8 @@ import javax.inject.Inject
 class EdtViewModel @Inject constructor( // cette classe permet de gérer les données de la page d'emploi du temps
     private val edtRepository: EdtRepository, // on injecte les repositories nécessaires pour la gestion des données
     private val abbreviationRepository: AbbreviationRepository,
-    private val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository,
+    private val retrofit: Retrofit
 ) : ViewModel() {
     var promo: String = "" // on définit les variables nécessaires pour la gestion des données de l'emploi du temps
 
@@ -40,9 +43,12 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
 
     private lateinit var _session: SessionEntity // idem que pour la liste des cours
     val session: SessionEntity get() = _session
-    suspend fun refresh(affichage: Affichage) { // cette fonction permet de rafraichir les données de l'emploi du temps et est une fonction suspend, voir EdtFragment.kt L124 pour plus d'informations
-        _abbreviations = abbreviationRepository.getAbbreviation() // on charge les abbreviations et les cours
-        _edt = edtRepository.getEdt(promo, date)
+    suspend fun refresh(affichage: Affichage): Result<List<CoursEntity>> { // cette fonction permet de rafraichir les données de l'emploi du temps et est une fonction suspend, voir EdtFragment.kt L124 pour plus d'informations
+        val resultAbbreviation = abbreviationRepository.getAbbreviation(retrofit) // on charge les abbreviations et les cours
+        val resultEdt = edtRepository.getEdt(promo, date, retrofit)
+
+        _abbreviations = resultAbbreviation.data!! // on charge les abbreviations et les cours
+        _edt = resultEdt.data!!
 
         groupes.clear() // on vide la liste des groupes
         edt.map { it.groupe }.distinct().sorted().let { liste ->
@@ -63,6 +69,8 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
         saveSession()
 
         affichage.afficher(edt, abbreviations, groupe) // l'affichage reçoit les données et les affiche selon sa méthode d'affichage
+
+        return resultEdt
     }
 
     suspend fun chargeSession(): SessionEntity? { // cette fonction permet de charger la session de l'utilisateur si elle existe, sinon d'en créer une

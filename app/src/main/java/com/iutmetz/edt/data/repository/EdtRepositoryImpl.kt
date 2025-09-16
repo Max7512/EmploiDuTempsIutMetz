@@ -1,36 +1,51 @@
 package com.iutmetz.edt.data.repository
 
+import com.iutmetz.edt.data.common.Result
 import com.iutmetz.edt.data.local.dao.CoursDao
 import com.iutmetz.edt.data.local.entity.CoursEntity
 import com.iutmetz.edt.data.mapping.EdtMapper
 import com.iutmetz.edt.data.remote.ApiService
+import com.iutmetz.edt.data.remote.NetworkResponse
 import com.iutmetz.edt.util.DateConverter
+import retrofit2.Retrofit
 import java.util.Date
 
 class EdtRepositoryImpl(
     private val apiService: ApiService, // on définit les objets nécessaires pour le repository
-    private val coursDao: CoursDao,
+    private val coursDao: CoursDao
 ) : EdtRepository {
-    override suspend fun getEdt(promo: String, date: Date): List<CoursEntity> { // cette fonction a pour but de récupérer l'emploi du temps depuis le serveur et les sauvegarder dans la base de données locale et les renvoyer ou de lire la base de données locale si il n'y a pas de connexion
-        val dateStr = DateConverter.fromLocal(date) // la date demandée est convertie en chaine de caractère sous la forme yyyy-mm-dd pour la requête de l'emploi du temps
-        val reponse = apiService.getEdtTxt(promo, dateStr) // on récupère la réponse du serveur
+    override suspend fun getEdt(
+        promo: String,
+        date: Date,
+        retrofit: Retrofit
+    ): Result<List<CoursEntity>> { // cette fonction a pour but de récupérer l'emploi du temps depuis le serveur et le sauvegarder dans la base de données locale puis de le renvoyer ou de lire la base de données locale si il n'y a pas de connexion
+        val dateStr =
+            DateConverter.fromLocal(date) // la date demandée est convertie en chaine de caractère sous la forme yyyy-mm-dd pour la requête de l'emploi du temps
 
-        val dateDeb = DateConverter.previousMonday(date) // on calcule la date de début et de fin de la semaine de la date demandée
-
+        val dateDeb =
+            DateConverter.previousMonday(date) // on calcule la date de début et de fin de la semaine de la date demandée
         val dateFin = DateConverter.nextSunday(date)
 
-        if (reponse.isSuccessful) { // si la réponse est valide on récupère l'emploi du temps et on l'insère dans la base de données locale
-            val edt = EdtMapper.fromRemote(reponse.body()!!) // on convertit la réponse en une liste de CoursEntity
+        val result = NetworkResponse.getResponse(
+            retrofit,
+            { apiService.getEdtTxt(promo, dateStr) },
+            "Erreur de chargement des abbréviations"
+        ) // on récupère la réponse du serveur
 
-            coursDao.deleteRange(dateDeb, dateFin) // la base de données locale est vidée pour être mise à jour
+        val edt =
+            mutableListOf<CoursEntity>() // on initialise une liste des cours en format local
 
-            edt.forEach { cours ->
-                coursDao.insert(cours) // l'emploi du temps est réinséré dans la base de données locale
+        if (result.status == Result.Status.SUCCESS) { // si la réponse est valide on récupère les abbréviations et on les insère dans la base de données locale
+            coursDao.deleteRange(dateDeb, dateFin)
+
+            edt.addAll(EdtMapper.fromRemote(result.data!!))
+
+            edt.forEach {
+                coursDao.insert(it)
             }
-
-            return edt
         } else {
-            return coursDao.getEdtRange(dateDeb, dateFin) // si la réponse n'est pas valide on renvoie l'emploi du temps de la base de données locale
+            edt.addAll(coursDao.getEdtRange(dateDeb, dateFin))
         }
+        return Result(result.status, edt, result.error, result.message)
     }
 }

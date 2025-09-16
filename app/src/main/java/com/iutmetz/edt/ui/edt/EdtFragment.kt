@@ -8,7 +8,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.iutmetz.edt.R
 import com.iutmetz.edt.data.common.Promo
+import com.iutmetz.edt.data.common.Result
+import com.iutmetz.edt.data.local.entity.CoursEntity
 import com.iutmetz.edt.databinding.FragmentEdtBinding
 import com.iutmetz.edt.ui.BaseFragment
 import com.iutmetz.edt.ui.edt.affichage.Affichage
@@ -140,12 +143,21 @@ class EdtFragment : BaseFragment() { // ce fragment permet d'afficher l'emploi d
 
     fun refreshPage() { // cette fonction permet de rafraîchir la page
         showProgressIndicator(true) // on affiche un indicateur de chargement
+
         val groupeVide = viewModel.groupe.isEmpty() // on vérifie si le groupe est vide au début de la requête
+
+        var result: Result<List<CoursEntity>>? = null // on initialise une variable pour stocker le résultat de la requête
+
         changeDate() // la date est mise à jour dans la vue
+
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) { // on lance une coroutine pour charger les données de l'emploi du temps
-            viewModel.refresh(affichage) // on charge les données de l'emploi du temps dans le ViewModel en lui donnant l'affichage à utiliser
+            result = viewModel.refresh(affichage) // on charge les données de l'emploi du temps dans le ViewModel en lui donnant l'affichage à utiliser
         }.invokeOnCompletion { // on attend que la coroutine soit terminée pour exécuter le code suivant
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) { // on lance une coroutine sur le thread principal pour mettre à jour la vue
+                if (result?.error != null) {
+                    showMessage(resources.getString(R.string.err_chargement)) // on affiche un message d'erreur si la requête a échoué
+                }
+
                 adapterGroupe.notifyDataSetChanged() // on met à jour l'adapter du spinner de groupe
 
                 if (groupeVide) binding.spinnerGroupe.setSelection(0) // si le groupe est vide, on met le premier élément du spinner par défaut
