@@ -19,6 +19,6 @@ interface ApiService { // cette interface permet de définir les différents end
     @GET("charge_abbreviations.php")
     suspend fun getAbbrevation(): Response<List<Data<List<Abbreviation>>>>
 
-    @GET
-    suspend fun getTags(@Url url: String): Response<List<GitHubTag>>
+    @GET // cette annotation permet de définir un endpoint qui dépend d'une url
+    suspend fun getTags(@Url url: String): Response<List<GitHubTag>> // cette requête utilise une URL en paramètre qui est différente du chemin vers l'api et retourne une liste de GitHubTag
 }

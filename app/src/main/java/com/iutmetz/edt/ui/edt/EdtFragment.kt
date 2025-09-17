@@ -167,11 +167,11 @@ class EdtFragment : BaseFragment() { // ce fragment permet d'afficher l'emploi d
                     else View.VISIBLE
                 showProgressIndicator(false) // on cache l'indicateur de chargement
                 spinnerTrigger = true // on réactive le rafraîchissement par les spinners
+            }
 
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                    if (!viewModel.estAJour()) viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        showMessage(resources.getString(R.string.mise_a_jour))
-                    }
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) { // on lance une coroutine pour vérifier si la version du projet est à jour
+                if (!viewModel.estAJour()) viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                    showMessage(resources.getString(R.string.mise_a_jour)) // on affiche un message si la version du projet n'est pas à jour
                 }
             }
         }

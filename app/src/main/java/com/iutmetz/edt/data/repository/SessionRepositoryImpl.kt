@@ -25,11 +25,11 @@ class SessionRepositoryImpl(
         }
     }
 
-    override suspend fun checkVersion(): String? {
-        val githubBaseUrl = "https://api.github.com/repos/Max7512/EmploiDuTempsIutMetz"
+    override suspend fun checkVersion(): String? { // cette fonction retourne la dernière version disponible sur le projet github ou null si une erreur se produit
+        val githubBaseUrl = "https://api.github.com/repos/Max7512/EmploiDuTempsIutMetz" // on définit l'url du projet github
 
-        val result = NetworkResponse.getResponse(retrofit, { apiService.getTags("$githubBaseUrl/tags") }, "")
+        val result = NetworkResponse.getResponse(retrofit, { apiService.getTags("$githubBaseUrl/tags") }, "") // on récupère les tags du projet github
 
-        return result.data?.maxOfOrNull { it.name }
+        return result.data?.maxOfOrNull { it.name } // on retourne la dernière version disponible ou null s'il n'y a pas de données
     }
 }
