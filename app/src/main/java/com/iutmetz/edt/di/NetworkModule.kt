@@ -1,5 +1,6 @@
 package com.iutmetz.edt.di
 
+import com.example.edt.BuildConfig
 import com.iutmetz.edt.BuildConfig
 import com.iutmetz.edt.data.remote.ApiService
 import com.google.gson.Gson

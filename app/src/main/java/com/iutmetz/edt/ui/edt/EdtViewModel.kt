@@ -1,6 +1,7 @@
 package com.iutmetz.edt.ui.edt
 
 import androidx.lifecycle.ViewModel
+import com.example.edt.BuildConfig
 import com.iutmetz.edt.data.common.Result
 import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 import com.iutmetz.edt.data.local.entity.CoursEntity
@@ -95,5 +96,13 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
 
     fun previousWeek() {
         date = date.apply { date -= 7 } // on enlève 7 jours à la date
+    }
+
+    suspend fun estAJour(): Boolean {
+        val version = sessionRepository.checkVersion()
+        version?.let {
+            return BuildConfig.VERSION_NAME >= version
+        }
+        return true
     }
 }
