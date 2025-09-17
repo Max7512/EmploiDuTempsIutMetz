@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.iutmetz.edt.R
 import com.google.gson.annotations.SerializedName
 
-data class Error( // cette classe sert à gérer les erreurs de l'API
+data class Error( // cette classe sert à préciser les erreurs de l'API
     @SerializedName("errorCode") val statusCode: Int = 0,
     @SerializedName("description") val statusMessage: String? = null,
     @SerializedName("code") val code: Int = 0,

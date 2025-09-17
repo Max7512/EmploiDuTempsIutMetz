@@ -2,9 +2,11 @@ package com.iutmetz.edt.data.remote
 
 import com.iutmetz.edt.data.remote.model.Abbreviation
 import com.iutmetz.edt.data.remote.model.Data
+import com.iutmetz.edt.data.remote.model.GitHubTag
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface ApiService { // cette interface permet de définir les différents endpoints de l'API, une instance sera automatiquement créé par le plugin retrofit et les fonctions seront définies également
 
@@ -16,4 +18,7 @@ interface ApiService { // cette interface permet de définir les différents end
 
     @GET("charge_abbreviations.php")
     suspend fun getAbbrevation(): Response<List<Data<List<Abbreviation>>>>
+
+    @GET // cette annotation permet de définir un endpoint qui dépend d'une url
+    suspend fun getTags(@Url url: String): Response<List<GitHubTag>> // cette requête utilise une URL en paramètre qui est différente du chemin vers l'api et retourne une liste de GitHubTag
 }

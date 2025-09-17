@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkBackground"
     android:orientation="vertical"
     tools:context=".ui.edt.EdtFragment">
 
@@ -17,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
+            android:theme="@style/Base.Theme.Bandeau"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -32,16 +31,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
+                    android:theme="@style/Base.Theme.Spinner"
                     android:backgroundTint="@color/white"
-                    tools:listitem="@layout/spinner_white" />
+                    tools:listitem="@layout/spinner_text"/>
 
                 <Spinner
                     android:id="@+id/spinnerGroupe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
+                    android:theme="@style/Base.Theme.Spinner"
                     android:backgroundTint="@color/white"
-                    tools:listitem="@layout/spinner_white" />
+                    tools:listitem="@layout/spinner_text"/>
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,8 +57,7 @@
                     android:src="@drawable/ic_event"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <ImageButton
                     android:id="@+id/ibLeft"
@@ -67,8 +67,7 @@
                     android:src="@drawable/ic_arrow_left"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/ibCalendar"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/tvRange"
@@ -76,7 +75,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="08/09 - 13/09"
-                    android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -92,8 +90,7 @@
                     android:src="@drawable/ic_arrow_left"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                    app:layout_constraintTop_toTopOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -101,7 +98,8 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollEdt"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:theme="@style/Theme.Edt">
 
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

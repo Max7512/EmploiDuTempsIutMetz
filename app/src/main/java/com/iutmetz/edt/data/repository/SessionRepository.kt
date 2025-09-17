@@ -6,4 +6,6 @@ interface SessionRepository { // on définit une interface qui permet de défini
     suspend fun getSession(): SessionEntity?
 
     suspend fun saveSession(session: SessionEntity)
+
+    suspend fun checkVersion(): String?
 }

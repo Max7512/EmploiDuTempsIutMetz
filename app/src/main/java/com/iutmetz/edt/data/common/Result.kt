@@ -1,6 +1,6 @@
 package com.iutmetz.edt.data.common
 
-data class Result<out T>( // cette classe sert à mettre en forme les réponses de l'API
+data class Result<out T>( // cette classe sert à donner plus d'informations sur les réponses de l'API
     val status: Status,
     val data: T?,
     val error: Error? = null,

@@ -19,6 +19,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -60,8 +62,12 @@ object AppModule { // ce module permet de définir les différents objets néces
     @Provides // cette annotation permet de définir une fonction qui sera appelée par dagger pour créer un objet
     fun provideSessionRepository( // cette fonction permet de créer un objet SessionRepositoryImpl qui implémentera l'interface SessionRepository
         sessionDao: SessionDao, // on définit les objets nécessaires pour le repository
+        apiService: ApiService,
+        retrofit: Retrofit
     ): SessionRepository =
         SessionRepositoryImpl( // on retourne un objet SessionRepositoryImpl avec les objets nécessaires
-            sessionDao
+            sessionDao,
+            apiService,
+            retrofit
         )
 }
