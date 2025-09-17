@@ -1,5 +1,8 @@
 package com.iutmetz.edt.ui.edt.affichage
 
+import android.content.res.Resources
+import android.util.AttributeSet
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.GridLayout
@@ -40,7 +43,6 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
 
             val textView = TextView(grid.context) // on crée un TextView pour afficher l'heure, un TextView sert à afficher du texte
             textView.text = i.toString() // l'heure est affichée
-            textView.setTextColor(context.getColor(R.color.white)) // la couleur du texte est blanche
             textView.layoutParams = LayoutParams().apply { // on définit les paramètres de la vue
                 rowSpec = GridLayout.spec(row, 1) // on définit la ligne et la colonne de la vue
                 columnSpec = GridLayout.spec(0, 1)
@@ -50,8 +52,9 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
 
             grid.addView(textView) // on ajoute la vue au tableau
 
-            val linearLayout = LinearLayout(grid.context) // on crée un LinearLayout pour signaler une demi heure, un LinearLayout est un peu comme un div en HTML
-            linearLayout.background = context.getDrawable(R.color.darkBackground) // on définit la couleur de fond du LinearLayout
+            val linearLayout = LinearLayout( // on crée un LinearLayout pour signaler une demi heure, un LinearLayout est un peu comme un div en HTML
+                ContextThemeWrapper(grid.context, R.style.Base_Theme_Edt), // on définit le thème de la vue
+                null, R.style.Base_Theme_Edt)
             linearLayout.layoutParams = LayoutParams().apply { // on définit les paramètres de la vue
                 rowSpec = GridLayout.spec(row + 1, 1) // on définit la ligne et la colonne de la vue
                 columnSpec = GridLayout.spec(0, 1)

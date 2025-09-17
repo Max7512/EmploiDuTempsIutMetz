@@ -2,9 +2,16 @@
 <resources>
     <color name="blue">#0C266D</color>
     <color name="lightBlue">#3B7CFF</color>
+
     <color name="darkBackground">#323340</color>
     <color name="darkBackgroundSecondary">#22222C</color>
+
+    <color name="lightBackground">#E8E9FF</color>
+    <color name="lightBackgroundSecondary">#D3D4E6</color>
+
     <color name="gray">#545454</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+
     <color name="black_transparent">#66000000</color>
 </resources>
