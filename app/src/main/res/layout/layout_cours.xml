@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardBackgroundColor="@color/lightBlue"
+        android:theme="@style/Base.Theme.Cours"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,7 +30,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/white"
                 android:text="Qual Dev"
                 android:textSize="9sp"/>
 
@@ -40,7 +40,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/white"
                 android:text="F33"
                 android:textSize="9sp"/>
 

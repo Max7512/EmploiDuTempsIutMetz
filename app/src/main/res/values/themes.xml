@@ -1,15 +1,33 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Edt" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@color/lightBackgroundSecondary</item>
     </style>
 
-    <style name="Theme.Edt" parent="Base.Theme.Edt" />
+    <style name="Base.Theme.Affichage" parent="Base.Theme.Edt">
+        <item name="android:background">@color/lightBackground</item>
+    </style>
+
+    <style name="Base.Theme.Bandeau" parent="Base.Theme.Edt">
+        <item name="android:background">@color/blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="Base.Theme.Spinner" parent="Base.Theme.Bandeau">
+<!--        <item name="android:backgroundTint">@color/white</item>-->
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Base.Theme.Cours" parent="Base.Theme.Edt">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/lightBlue</item>
+    </style>
 
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
         <item name="colorControlActivated">@color/lightBlue</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
