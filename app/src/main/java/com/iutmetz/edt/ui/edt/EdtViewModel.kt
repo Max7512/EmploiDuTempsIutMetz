@@ -1,7 +1,7 @@
 package com.iutmetz.edt.ui.edt
 
 import androidx.lifecycle.ViewModel
-import com.example.edt.BuildConfig
+import com.iutmetz.edt.BuildConfig
 import com.iutmetz.edt.data.common.Result
 import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 import com.iutmetz.edt.data.local.entity.CoursEntity
@@ -101,7 +101,7 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
     suspend fun estAJour(): Boolean {
         val version = sessionRepository.checkVersion()
         version?.let {
-            return BuildConfig.VERSION_NAME >= version
+            return BuildConfig.VERSION_NAME >= it.replace("v", "")
         }
         return true
     }

@@ -1,11 +1,9 @@
 package com.iutmetz.edt.data.remote
 
-import com.example.edt.BuildConfig
 import com.iutmetz.edt.data.remote.model.Abbreviation
 import com.iutmetz.edt.data.remote.model.Data
 import com.iutmetz.edt.data.remote.model.GitHubTag
 import retrofit2.Response
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Url

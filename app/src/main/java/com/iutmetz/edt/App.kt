@@ -1,7 +1,6 @@
 package com.iutmetz.edt
 
 import android.app.Application
-import com.example.edt.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

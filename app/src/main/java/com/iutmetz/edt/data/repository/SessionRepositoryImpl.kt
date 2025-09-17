@@ -1,8 +1,5 @@
 package com.iutmetz.edt.data.repository
 
-import android.os.Build
-import com.example.edt.BuildConfig
-import com.iutmetz.edt.data.common.Result
 import com.iutmetz.edt.data.local.dao.SessionDao
 import com.iutmetz.edt.data.local.entity.SessionEntity
 import com.iutmetz.edt.data.remote.ApiService
@@ -29,7 +26,7 @@ class SessionRepositoryImpl(
     }
 
     override suspend fun checkVersion(): String? {
-        val githubBaseUrl = "https://https://api.github.com/repos/Max7512/EmploiDuTempsIutMetz"
+        val githubBaseUrl = "https://api.github.com/repos/Max7512/EmploiDuTempsIutMetz"
 
         val result = NetworkResponse.getResponse(retrofit, { apiService.getTags("$githubBaseUrl/tags") }, "")
 
