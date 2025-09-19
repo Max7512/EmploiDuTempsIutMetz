@@ -1,5 +1,6 @@
 package com.iutmetz.edt.data.mapping
 
+import androidx.core.text.isDigitsOnly
 import com.iutmetz.edt.data.local.entity.CoursEntity
 import com.iutmetz.edt.util.DateConverter
 import kotlin.math.floor
@@ -119,10 +120,12 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
 
     fun extraitGroupe(summarySplit: List<String>, summary: String): String {
         return if (summarySplit.size > 1) {
-            val tabGroupe = summarySplit[0].split(" ").toMutableList()
+            val tabGroupe = summarySplit[0].split(" ")
             val groupe = tabGroupe.last().trim() // on récupère le dernier élément du tableau qui est le groupe ou dans le cas du but 2 DACS ou RA
             if (groupe == "DACS" || groupe == "RA") { // cas des groupes DACS et RA qui deviendront par exemple RA.3
                 groupeBUT2(summary)
+            } else if (groupe == "FI") {
+                groupeBUT3RA(tabGroupe)
             } else {
                 groupe // dans le cas des autres groupes on retourne juste le groupe qui est de la forme X ou X.X
             }
@@ -151,6 +154,14 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
             }
         } else {
             return ""
+        }
+    }
+
+    fun groupeBUT3RA(tabGroupe: List<String>): String {
+        return if (tabGroupe.contains("et")) {
+            ""
+        } else {
+            tabGroupe.findLast { it.isDigitsOnly() }!!
         }
     }
 }
