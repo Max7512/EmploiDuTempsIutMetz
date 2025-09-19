@@ -24,7 +24,10 @@ abstract class Affichage( // cette classe permet de créer un modèle pour affic
 
     fun filtrerCoursParGroupe(edt: List<CoursEntity>, groupe: String): List<CoursEntity> { // cette fonction permet de filtrer les cours par groupe
         return edt.filter { // on filtre les cours selon une condition
-                groupe.substring(0, it.groupe.length) == it.groupe // on vérifie si le groupe du cours inclus le groupe passé en paramètre
+                it.groupe.split("+").forEach { // on sépare les groupes dans le cas des SAE ou autres cours incluant plusieurs groupe précis
+                    if (groupe.substring(0, it.length) == it) return@filter true // on vérifie si le groupe du cours inclus le groupe passé en paramètre
+                }
+            return@filter false
             }
     }
 }
