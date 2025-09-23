@@ -33,7 +33,7 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                         dtEnd?.let {
                             summary?.let {
                                 val summarySplit = summary.split(": ")
-                                val groupe = extraitGroupe(summarySplit, summary)
+                                val groupes = extraitGroupe(summarySplit, summary)
                                 var salle = location?.trim() ?: "Salle???"
                                 val ile = "Ile du Saulcy_"
                                 if (salle.startsWith(ile)) {
@@ -71,17 +71,19 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                                         }
                                     }
                                 }
-                                edt.add(
-                                    CoursEntity(
-                                        uid,
-                                        summarySplit.last().trim(),
-                                        salle,
-                                        prof,
-                                        groupe,
-                                        dtStart,
-                                        dtEnd
+                                groupes.forEach {
+                                    edt.add(
+                                        CoursEntity(
+                                            uid,
+                                            summarySplit.last().trim(),
+                                            salle,
+                                            prof,
+                                            it,
+                                            dtStart,
+                                            dtEnd
+                                        )
                                     )
-                                )
+                                }
                             }
                         }
                     }
@@ -101,7 +103,7 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
 
     fun extraitNom(prof: String): String {
         var retour = ""
-        retour.forEach { c ->
+        prof.forEach { c ->
             if (c.isUpperCase()) {
                 retour += c
             }
@@ -109,7 +111,7 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
         retour += "."
         // Inverser Nom Prénom en Prénom Nom si format "Nom P."
         //val match = retour.match(/^(.*)\s+([A-Z]\.)$/)
-        val match = Regex("^(.*)\\s+([A-Z]\\.)$").find(retour)
+        val match = Regex("^(.*)\\s+([A-Z]\\.)$").find(prof)
         match?.let {
             val nom = it.groupValues[1]
             val initiale = it.groupValues[2]
@@ -118,18 +120,18 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
         return retour
     }
 
-    fun extraitGroupe(summarySplit: List<String>, summary: String): String {
+    fun extraitGroupe(summarySplit: List<String>, summary: String): List<String> {
         return if (summarySplit.size > 1) {
             val tabGroupe = summarySplit[0].split(" ")
             val groupe = tabGroupe.last().trim() // on récupère le dernier élément du tableau qui est le groupe ou dans le cas du but 2 DACS ou RA
             if (groupe == "DACS" || groupe == "RA") { // cas des groupes DACS et RA qui deviendront par exemple RA.3
-                groupeBUT2(summary)
+                groupeBUT2(summary).split("+")
             } else if (groupe == "FI") {
-                groupeBUT3RA(tabGroupe)
+                groupeBUT3RA(tabGroupe).split("+")
             } else {
-                groupe // dans le cas des autres groupes on retourne juste le groupe qui est de la forme X ou X.X
+                groupe.split("+") // dans le cas des autres groupes on retourne juste le groupe qui est de la forme X ou X.X
             }
-        } else ""
+        } else listOf("")
     }
 
     fun groupeBUT2(summary: String): String { // traitement spécial pour les groupes BUT2 à cause de leur forme unique, tiré du site web de l'IUT

@@ -69,8 +69,8 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
     override fun afficherCours(cours: CoursEntity, abbreviations: List<AbbreviationEntity>) { // cette fonction permet de définir comment afficher un cours
         val jour = cours.debut.day // on récupère le jour de la semaine du cours
         if (jour != 0) { // si le jour n'est pas de 0 (dimanche)
-            val heureDebut = cours.debut.hours * 2 + if (cours.debut.minutes >= 15) 1 else 0 // on calcule l'heure de début et de fin en comptant une heure comme 2 et si il y a encore plus de 15 minutes, on ajoute 1
-            val heureFin = cours.fin.hours * 2 + if (cours.fin.minutes >= 15) 1 else 0
+            val heureDebut = cours.debut.hours * 2 + if (cours.debut.minutes >= 20) 1 else 0 // on calcule l'heure de début et de fin en comptant une heure comme 2 et si il y a encore plus de 15 minutes, on ajoute 1
+            val heureFin = cours.fin.hours * 2 + if (cours.fin.minutes >= 20) 1 else 0
             val rowSpan = heureFin - heureDebut // on calcule le nombre de lignes nécessaires pour afficher le cours
             val row = heureDebut - ((this.heureDebut + (cours.debut.timezoneOffset / 60)) * 2) + 1 // on calcule la ligne de début du cours de façon à bien aligner les cours sur la bonne heure de début
             val param = LayoutParams().apply { // on définit les paramètres de la vue
