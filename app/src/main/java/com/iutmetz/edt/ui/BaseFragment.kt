@@ -14,9 +14,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint // cette annotation permet de rendre la classe injectable
 abstract class BaseFragment : Fragment() { // cette classe permet de définir des fonctions et des objets qui seront partagés par les fragments
-
-    private val vibrationDurationMillis: Long = 1000 // on définit la durée de vibration en millisecondes
-
     @Inject
     lateinit var vibrator: Vibrator // on injecte un objet Vibrator qui sera utilisé pour la fonction vibrate
 
@@ -29,7 +26,7 @@ abstract class BaseFragment : Fragment() { // cette classe permet de définir de
     }
 
     @SuppressWarnings("deprecation")
-    protected fun vibrate() { // cette fonction permet de jouer une vibration sur le téléphone
+    protected fun vibrate(vibrationDurationMillis: Long = 1000) { // cette fonction permet de jouer une vibration sur le téléphone
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             @Suppress("DEPRECATION")
             vibrator.vibrate(vibrationDurationMillis)
@@ -53,11 +50,11 @@ abstract class BaseFragment : Fragment() { // cette classe permet de définir de
         if (message == null) return
 
         view?.let {
-            Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(it, message, Snackbar.LENGTH_LONG).show()
             return
         }
 
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onStop() { // cette fonction est appelée lorsque le fragment est détruit
