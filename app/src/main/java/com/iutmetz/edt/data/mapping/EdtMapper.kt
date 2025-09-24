@@ -5,7 +5,7 @@ import com.iutmetz.edt.data.local.entity.CoursEntity
 import com.iutmetz.edt.util.DateConverter
 import kotlin.math.floor
 
-object EdtMapper: Mapper<List<CoursEntity>, String> {
+object EdtMapper : Mapper<List<CoursEntity>, String> {
     override fun fromRemote(r: String): List<CoursEntity> { // la conversion de la réponse serveur en chaine de caractère en un tableau de CoursEntity (local), le code est tiré de l'appli web réalisée par le département
         val edt = mutableListOf<CoursEntity>()
         val vevents = r.split("BEGIN:VEVENT").toMutableList()
@@ -17,20 +17,12 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
             val dtEnd = dtEndString?.let { DateConverter.fromRemote(it) }
             val summary = Regex("SUMMARY:(.+)").find(block)?.groupValues[1]
             val location = Regex("LOCATION:(.+)").find(block)?.groupValues[1]
-            val description = Regex("DTEND:(\\d+T\\d+)", RegexOption.DOT_MATCHES_ALL).find(block)?.groupValues[1]
+            val description =
+                Regex("DTEND:(\\d+T\\d+)", RegexOption.DOT_MATCHES_ALL).find(block)?.groupValues[1]
             val uid = Regex("UID:(.+)").find(block)?.groupValues[1]
             uid?.let {
-                val continuer = edt.find { uid == it.id }?.let { doublon ->
-                    if (doublon.salle == "Salle???") {
-                        edt.remove(doublon)
-                        return@let true
-                    } else {
-                        return@let false
-                    }
-                } ?: true
-                if (continuer) {
-                    dtStart?.let {
-                        dtEnd?.let {
+                dtStart?.let {
+                    dtEnd?.let {
                             summary?.let {
                                 val summarySplit = summary.split(": ")
                                 val groupes = extraitGroupe(summarySplit, summary)
@@ -47,9 +39,14 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                                     // et parfois aussi des 0a0d (non visibles)
                                     lignes[i] = lignes[i].trim().replace(Regex("[\\r\\n]\\s+"), "")
                                     // j'essaye de ne garder que l'enseignant
-                                    if (lignes[i].length <= 3 || lignes[i].contains("TD ") || lignes[i].contains("TP ") ||
-                                        lignes[i].contains("CM ") || lignes[i].contains("EI ") || lignes[i].contains("Modifi") ||
-                                        lignes[i].contains("(M")) {
+                                    if (lignes[i].length <= 3 || lignes[i].contains("TD ") || lignes[i].contains(
+                                            "TP "
+                                        ) ||
+                                        lignes[i].contains("CM ") || lignes[i].contains("EI ") || lignes[i].contains(
+                                            "Modifi"
+                                        ) ||
+                                        lignes[i].contains("(M")
+                                    ) {
                                         lignes.removeAt(i)
                                     }
                                 }
@@ -64,13 +61,24 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                                         // (c'est comme ça que j'identifie un prof :-( !!!)
                                         if (np.size >= 2 && np[0].length >= 2 && np[1].length >= 2 && sansChiffre(
                                                 np
-                                            )) {
+                                            )
+                                        ) {
                                             prof = ligne.trim()
                                             prof = extraitNom(prof)
                                             return@forEach
                                         }
                                     }
                                 }
+                                val continuer = edt.find { uid == it.id }?.let { doublon ->
+                                    if (dtStart.before(doublon.debut)) doublon.debut = dtStart
+
+                                    if (dtEnd.after(doublon.fin)) doublon.fin = dtEnd
+
+                                    if (doublon.salle == "Salle???") doublon.salle = salle
+
+                                    return@let false
+                                } ?: true
+                                if (continuer)
                                 groupes.forEach {
                                     edt.add(
                                         CoursEntity(
@@ -85,7 +93,6 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                                     )
                                 }
                             }
-                        }
                     }
                 }
             }
@@ -123,7 +130,8 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
     fun extraitGroupe(summarySplit: List<String>, summary: String): List<String> {
         return if (summarySplit.size > 1) {
             val tabGroupe = summarySplit[0].split(" ")
-            val groupe = tabGroupe.last().trim() // on récupère le dernier élément du tableau qui est le groupe ou dans le cas du but 2 DACS ou RA
+            val groupe = tabGroupe.last()
+                .trim() // on récupère le dernier élément du tableau qui est le groupe ou dans le cas du but 2 DACS ou RA
             if (groupe == "DACS" || groupe == "RA") { // cas des groupes DACS et RA qui deviendront par exemple RA.3
                 groupeBUT2(summary).split("+")
             } else if (groupe == "FI") {
@@ -152,7 +160,8 @@ object EdtMapper: Mapper<List<CoursEntity>, String> {
                 }
                 return "$groupeNum.$groupeTP"
             } else {
-                return match.groupValues[2].toInt().toString() // dans le cas des TD et CM on retourne juste le numéro de groupe en se débarrassant d'éventuels 0 au début
+                return match.groupValues[2].toInt()
+                    .toString() // dans le cas des TD et CM on retourne juste le numéro de groupe en se débarrassant d'éventuels 0 au début
             }
         } else {
             return ""
