@@ -118,6 +118,9 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.10"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    implementation("com.github.skydoves:colorpicker-compose:1.1.2")
+    implementation(libs.compose.colorpicker)
 }
 
 kapt {

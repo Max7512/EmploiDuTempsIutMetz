@@ -8,8 +8,6 @@ import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 import com.iutmetz.edt.data.local.entity.CoursEntity
 
 abstract class Affichage( // cette classe permet de créer un modèle pour afficher les cours de l'emploi du temps, elle est abstraite car elle ne peut pas être instanciée
-    protected val inflater: LayoutInflater, // on utilise un inflater pour créer la vue de l'affichage
-    protected val parent: ViewGroup, // on spécifie un parent pour ajouter la vue au parent
     protected val lifecycleScope: LifecycleCoroutineScope // on utilise un scope de coroutine pour gérer les tâches asynchrones ce qui est nécessaire pour afficher les cours de l'emploi du temps
 ) {
     protected abstract val binding: ViewBinding // on définit un binding qui est un objet qui permet de lier les éléments de la vue avec le code, ce binding peut être de n'importe quel layout
