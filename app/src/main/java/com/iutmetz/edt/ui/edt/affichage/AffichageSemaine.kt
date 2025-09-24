@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi du temps par semaine
     inflater: LayoutInflater,
     parent: ViewGroup, // on définit les arguments nécessaires pour l'affichage
-    lifecycleScope: LifecycleCoroutineScope
-) : Affichage(inflater, parent, lifecycleScope) {
+    private val lifecycleScope: LifecycleCoroutineScope // on utilise un scope de coroutine pour gérer les tâches asynchrones ce qui est nécessaire pour afficher les cours de l'emploi du temps
+) : Affichage() {
     private var density = 0f // on utilise une densité pour calculer des tailles en pixels
     private val rowHeight = 30
     private val columnWidth = 60

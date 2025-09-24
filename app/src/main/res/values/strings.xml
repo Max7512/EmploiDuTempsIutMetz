@@ -15,4 +15,9 @@
     <string name="cours">Cours</string>
     <string name="texteBandeau">Texte du bandeau</string>
     <string name="texteCours">Texte des cours</string>
+    <string name="parametres">Paramètres</string>
+    <string name="annuler">Annuler</string>
+    <string name="confirmer">Confirmer</string>
+    <string name="quitter">Quitter</string>
+    <string name="quitter_message">Êtes-vous sûr de vouloir quitter sans sauvegarder ?</string>
 </resources>

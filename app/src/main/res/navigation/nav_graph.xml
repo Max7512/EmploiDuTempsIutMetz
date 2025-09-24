@@ -3,15 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/EdtFragment">
+    app:startDestination="@id/edtFragment">
 
     <fragment
-        android:id="@+id/EdtFragment"
+        android:id="@+id/edtFragment"
         android:name="com.iutmetz.edt.ui.edt.EdtFragment"
+        android:label="EdtFragment"
         tools:layout="@layout/fragment_edt">
 
         <action
-            android:id="@+id/action_EdtFragment_to_EdtFragment"
-            app:destination="@id/EdtFragment" />
+            android:id="@+id/action_edtFragment_to_parametresFragment"
+            app:destination="@id/parametresFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/parametresFragment"
+        android:name="com.iutmetz.edt.ui.parametres.ParametresFragment"
+        android:label="ParametresFragment"
+        tools:layout="@layout/fragment_parametres">
+
+        <action
+            android:id="@+id/action_parametresFragment_to_edtFragment"
+            app:destination="@id/edtFragment" />
     </fragment>
 </navigation>

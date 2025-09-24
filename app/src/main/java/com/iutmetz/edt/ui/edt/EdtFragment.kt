@@ -93,33 +93,39 @@ class EdtFragment : BaseFragment() { // ce fragment permet d'afficher l'emploi d
             }
         }
 
-        binding.ibLeft.setOnClickListener { // on initialise les boutons pour naviguer entre les semaines
-            viewModel.previousWeek() // on change la date dans le ViewModel à la semaine dernière
-            refreshPage() // la page est rafraîchie
-        }
+        binding.apply {
+            ibLeft.setOnClickListener { // on initialise les boutons pour naviguer entre les semaines
+                viewModel.previousWeek() // on change la date dans le ViewModel à la semaine dernière
+                refreshPage() // la page est rafraîchie
+            }
 
-        binding.ibRight.setOnClickListener {
-            viewModel.nextWeek() // on change la date dans le ViewModel à la semaine prochaine
-            refreshPage() // la page est rafraîchie
-        }
+            ibRight.setOnClickListener {
+                viewModel.nextWeek() // on change la date dans le ViewModel à la semaine prochaine
+                refreshPage() // la page est rafraîchie
+            }
 
-        binding.ibCalendar.setOnClickListener { // on initialise le bouton pour afficher le calendrier
-            binding.clCalendar.visibility = View.VISIBLE // on affiche le calendrier
-        }
+            ibCalendar.setOnClickListener { // on initialise le bouton pour afficher le calendrier
+                binding.clCalendar.visibility = View.VISIBLE // on affiche le calendrier
+            }
 
-        binding.ibCancel.setOnClickListener { // on initialise le bouton pour masquer le calendrier
-            binding.clCalendar.visibility = View.GONE // on cache le calendrier
-        }
+            ibCancel.setOnClickListener { // on initialise le bouton pour masquer le calendrier
+                binding.clCalendar.visibility = View.GONE // on cache le calendrier
+            }
 
-        binding.clCalendar.setOnClickListener { // l'arrière plan du calendrier est initalisé pour permettre de masquer le calendrier également
-            binding.clCalendar.visibility = View.GONE // on cache le calendrier
-        }
+            clCalendar.setOnClickListener { // l'arrière plan du calendrier est initalisé pour permettre de masquer le calendrier également
+                binding.clCalendar.visibility = View.GONE // on cache le calendrier
+            }
 
-        binding.calendar.setOnDateChangeListener { _, year, month, dayOfMonth -> // on définit le code à éxecuter lors d'un changement de date dans le calendrier
-            viewModel.date = Date(year - 1900, month, dayOfMonth) // on met à jour la date dans le ViewModel
-            changeDate() // la date est mise à jour dans la vue
-            binding.clCalendar.visibility = View.GONE // on cache le calendrier
-            refreshPage() // la page est rafraîchie
+            calendar.setOnDateChangeListener { _, year, month, dayOfMonth -> // on définit le code à éxecuter lors d'un changement de date dans le calendrier
+                viewModel.date = Date(year - 1900, month, dayOfMonth) // on met à jour la date dans le ViewModel
+                changeDate() // la date est mise à jour dans la vue
+                binding.clCalendar.visibility = View.GONE // on cache le calendrier
+                refreshPage() // la page est rafraîchie
+            }
+
+            ibParametres.setOnClickListener {
+                navigate(EdtFragmentDirections.actionEdtFragmentToParametresFragment())
+            }
         }
 
         showProgressIndicator(true) // on affiche un indicateur de chargement

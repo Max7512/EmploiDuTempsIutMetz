@@ -2,6 +2,7 @@ package com.iutmetz.edt.ui.edt
 
 import androidx.lifecycle.ViewModel
 import com.iutmetz.edt.BuildConfig
+import com.iutmetz.edt.R
 import com.iutmetz.edt.data.common.Result
 import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 import com.iutmetz.edt.data.local.entity.CoursEntity
