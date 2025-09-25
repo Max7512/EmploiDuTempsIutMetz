@@ -19,8 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.getValue
 
-class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher l'emploi du temps de l'utilisateur et hérites des fonctions de base définies dans la classe BaseFragment
-    private val viewModel: ParametresViewModel by viewModels() // on utilise un view model pour gérer les données de l'emploi du temps de l'utilisateur
+class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les paramètres du package parametre et hérite des fonctions de base définies dans la classe BaseFragment
+    private val viewModel: ParametresViewModel by viewModels() // on utilise un view model pour gérer les données des paramètres
     private var _binding: FragmentParametresBinding? = null // on utilise un binding pour accéder aux éléments de la vue
     val binding get() = _binding!! // on utilise un getteur pour accéder au binding tout en empechant d'en modifier la valeur
     private var parametreList: List<Parametre> = listOf() // on initialise une liste de paramètres vide
@@ -37,24 +37,24 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher l'e
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.chargeSession()
+            viewModel.chargeSession() // on charge la session de l'utilisateur
 
             lifecycleScope.launch(Dispatchers.Main) {
-                parametreList = listOf(
+                parametreList = listOf( // on initialise la liste de paramètres
                     ParametreCouleurs(viewModel.session, binding.clContent, layoutInflater, binding.scrollParametres)
                 )
 
-                parametreList.forEach {
+                parametreList.forEach { // on initialise chaque paramètre
                     it.initView()
                 }
             }
         }
 
-        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) { // on gère le comportement du bouton retour
             override fun handleOnBackPressed() {
-                if (viewModel.session == viewModel.sessionOriginal)
-                    navigate(ParametresFragmentDirections.actionParametresFragmentToEdtFragment())
-                else
+                if (viewModel.session == viewModel.sessionOriginal) // si la session n'a pas été modifiée on revient en arrière
+                    findNavController().popBackStack()
+                else // sinon on affiche une boite de dialogue de confirmation
                     context?.let {
                         ConfirmationDialog(
                             it,
@@ -70,27 +70,27 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher l'e
             }
         })
 
-        binding.apply {
-            ibCancel.setOnClickListener {
+        binding.apply { // on initialise les interactions avec l'utilisateur
+            ibCancel.setOnClickListener { // si on clique sur le bouton de retour du popup on le cache
                 clContent.children.forEach {
                     it.visibility = View.GONE
                 }
                 clPopup.visibility = View.GONE
             }
 
-            clPopup.setOnClickListener {
+            clPopup.setOnClickListener { // si on clique sur l'arrière plan popup on le cache
                 clContent.children.forEach {
                     it.visibility = View.GONE
                 }
                 clPopup.visibility = View.GONE
             }
 
-            ibSave.setOnClickListener {
+            ibSave.setOnClickListener { // si on clique sur le bouton de sauvegarde on sauvegarde la session et on revient en arrière
                 lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.saveSession()
 
                     lifecycleScope.launch(Dispatchers.Main) {
-                        navigate(ParametresFragmentDirections.actionParametresFragmentToEdtFragment())
+                        findNavController().popBackStack()
                     }
                 }
             }
