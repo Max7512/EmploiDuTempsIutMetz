@@ -9,10 +9,10 @@ import androidx.room.Entity
 data class SessionEntity( // cette classe correspond au modèle de données des sessions dans la base de données locale
     var promo: String = "",
     var groupe: String = "",
-    var coursColor: Int = 0,
-    var coursTextColor: Int = 0,
-    var bandeauColor: Int = 0,
-    var bandeauTextColor: Int = 0,
+    var coursColor: Int,
+    var coursTextColor: Int,
+    var bandeauColor: Int,
+    var bandeauTextColor: Int,
 
     ) {
 

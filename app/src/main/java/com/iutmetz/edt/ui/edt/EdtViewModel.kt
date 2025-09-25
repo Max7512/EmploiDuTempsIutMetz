@@ -1,5 +1,7 @@
 package com.iutmetz.edt.ui.edt
 
+import android.content.res.Resources
+import android.util.TypedValue
 import androidx.lifecycle.ViewModel
 import com.iutmetz.edt.BuildConfig
 import com.iutmetz.edt.R
@@ -75,14 +77,28 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
         return resultEdt
     }
 
-    suspend fun chargeSession(): SessionEntity? { // cette fonction permet de charger la session de l'utilisateur si elle existe, sinon d'en créer une
+    suspend fun chargeSession(theme: Resources.Theme): SessionEntity? { // cette fonction permet de charger la session de l'utilisateur si elle existe, sinon d'en créer une
         val session = sessionRepository.getSession() // on charge la session de l'utilisateur
         if (session != null) { // si la session existe
             _session = session
             promo = session.promo // on met à jour les variables de la classe
             groupe = session.groupe
         } else {
-            _session = SessionEntity(promo, groupe) // sinon on en crée une
+            val typedValue = TypedValue()
+
+            theme.resolveAttribute(R.attr.coursColor, typedValue, true)
+            val coursColor = typedValue.data
+
+            theme.resolveAttribute(R.attr.coursTextColor, typedValue, true)
+            val coursTextColor = typedValue.data
+
+            theme.resolveAttribute(R.attr.bandeauColor, typedValue, true)
+            val bandeauColor = typedValue.data
+
+            theme.resolveAttribute(R.attr.bandeauTextColor, typedValue, true)
+            val bandeauTextColor = typedValue.data
+
+            _session = SessionEntity(promo, groupe, coursColor, coursTextColor, bandeauColor, bandeauTextColor) // sinon on en crée une
         }
         return session // on retourne la session chargée au début
     }

@@ -131,7 +131,7 @@ class EdtFragment : BaseFragment() { // ce fragment permet d'afficher l'emploi d
         showProgressIndicator(true) // on affiche un indicateur de chargement
         lifecycleScope.launch(Dispatchers.IO) { // on lance une coroutine qui est un thread séparé du thread principal pour charger les données de l'emploi du temps,
             // à noter que dans kotlin les fonctions asynchrone sont des fonctions suspend, elles bloquent complètement le thread courant et doivent donc être lancées dans une coroutine
-            val session = viewModel.chargeSession() // on charge la session de l'utilisateur
+            val session = viewModel.chargeSession(requireContext().theme) // on charge la session de l'utilisateur
 
             if (session == null) {
                 viewModel.promo = promoOptions[binding.spinnerPromo.selectedItemPosition].code // le code de promo est mis par défaut au premier élément du spinner si la session n'existe pas

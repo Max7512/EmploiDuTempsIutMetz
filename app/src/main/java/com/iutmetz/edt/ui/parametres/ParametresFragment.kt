@@ -37,7 +37,7 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.chargeSession() // on charge la session de l'utilisateur
+            viewModel.chargeSession(requireContext().theme) // on charge la session de l'utilisateur
 
             lifecycleScope.launch(Dispatchers.Main) {
                 parametreList = listOf( // on initialise la liste de paramètres

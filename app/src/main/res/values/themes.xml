@@ -12,11 +12,13 @@
     <style name="Base.Theme.Bandeau" parent="Base.Theme.Edt">
         <item name="android:background">@color/blue</item>
         <item name="android:textColor">@color/white</item>
+        <item name="bandeauColor">@color/blue</item>
+        <item name="bandeauTextColor">@color/white</item>
         <item name="tint">@color/white</item>
     </style>
 
     <style name="Base.Theme.Spinner" parent="Base.Theme.Bandeau">
-<!--        <item name="android:backgroundTint">@color/white</item>-->
+        <!--        <item name="android:backgroundTint">@color/white</item>-->
         <item name="android:textColor">@color/white</item>
     </style>
 
