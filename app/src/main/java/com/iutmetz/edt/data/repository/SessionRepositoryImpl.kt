@@ -21,7 +21,7 @@ class SessionRepositoryImpl(
         if (savedSession == null) {
             sessionDao.insert(session) // si aucune session n'est sauvegardée on l'insère dans la base de données locale
         } else {
-            sessionDao.update(session.promo, session.groupe) // sinon on met à jour la session avec les nouvelles valeurs
+            sessionDao.update(session.promo, session.groupe, session.coursColor, session.coursTextColor, session.bandeauColor, session.bandeauTextColor) // sinon on met à jour la session avec les nouvelles valeurs
         }
     }
 

@@ -14,26 +14,26 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llBandeau"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:theme="@style/Base.Theme.Bandeau"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:theme="@style/Base.Theme.Bandeau">
 
             <ImageButton
                 android:id="@+id/ibSave"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_save"/>
+                android:src="@drawable/ic_save" />
 
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/parametres"
-                    android:textSize="20sp"
-                    />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/parametres"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -64,24 +64,24 @@
             app:tint="@color/white" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/clContent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.skydoves.colorpickerview.ColorPickerView
+                android:id="@+id/colorPicker"
                 android:layout_width="350dp"
                 android:layout_height="350dp"
-                android:id="@+id/colorPicker"
+                android:visibility="gone"
                 app:debounceDuration="100"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

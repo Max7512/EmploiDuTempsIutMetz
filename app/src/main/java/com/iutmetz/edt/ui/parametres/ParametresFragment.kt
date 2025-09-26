@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +22,7 @@ import com.iutmetz.edt.ui.parametres.parametre.ParametreCouleurs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import kotlin.sequences.forEach
 
 class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les paramètres du package parametre et hérite des fonctions de base définies dans la classe BaseFragment
     private val viewModel: ParametresViewModel by viewModels() // on utilise un view model pour gérer les données des paramètres
@@ -40,6 +45,16 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les
             viewModel.chargeSession(requireContext().theme) // on charge la session de l'utilisateur
 
             lifecycleScope.launch(Dispatchers.Main) {
+                val backgroundColor = viewModel.session.bandeauColor
+                val textColor = viewModel.session.bandeauTextColor
+
+                binding.llBandeau.allViews.forEach {
+                    if (it is TextView) it.setTextColor(textColor)
+                    if (it is ImageButton) it.setColorFilter(textColor)
+
+                    it.setBackgroundColor(backgroundColor)
+                }
+
                 parametreList = listOf( // on initialise la liste de paramètres
                     ParametreCouleurs(viewModel.session, binding.clContent, layoutInflater, binding.scrollParametres)
                 )

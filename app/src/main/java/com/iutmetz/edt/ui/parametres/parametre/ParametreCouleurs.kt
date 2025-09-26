@@ -70,6 +70,8 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
                 colorPickerView.visibility = View.VISIBLE
             }
         }
+
+        changeButtonsColor()
     }
 
     fun changeButtonsColor() { // cette fonction permet de changer la couleur des boutons

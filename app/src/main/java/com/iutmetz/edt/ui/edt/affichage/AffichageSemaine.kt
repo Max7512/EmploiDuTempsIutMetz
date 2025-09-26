@@ -93,7 +93,8 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
                     tvTitre.text = titre // on définit le texte du titre de la vue
                     root.layoutParams = param // on applique les paramètres à la vue
 
-                    mcvCours.allViews.forEach {
+                    mcvCours.setCardBackgroundColor(session.coursColor)
+                    clContent.allViews.forEach {
                         it.setBackgroundColor(session.coursColor)
 
                         if (it is TextView) it.setTextColor(session.coursTextColor)
