@@ -1,11 +1,15 @@
 package com.iutmetz.edt.ui.edt
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.core.view.allViews
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.iutmetz.edt.R
@@ -50,7 +54,6 @@ class EdtFragment : BaseFragment() { // ce fragment permet d'afficher l'emploi d
     ): View {
 
         _binding = FragmentEdtBinding.inflate(inflater, container, false) // on initialise la vue de la page
-        _affichage = AffichageSemaine(inflater, binding.scrollEdt, viewLifecycleOwner.lifecycleScope) // on initialise l'affichage de l'emploi du temps à un affichage par semaine
         return binding.root
 
     }
@@ -134,11 +137,24 @@ class EdtFragment : BaseFragment() { // ce fragment permet d'afficher l'emploi d
             val session = viewModel.chargeSession(requireContext().theme) // on charge la session de l'utilisateur
 
             if (session == null) {
-                viewModel.promo = promoOptions[binding.spinnerPromo.selectedItemPosition].code // le code de promo est mis par défaut au premier élément du spinner si la session n'existe pas
+                viewModel.promo = promoOptions[binding.spinnerPromo.selectedItemPosition].code // le code de promo est mit par défaut au premier élément du spinner si la session n'existe pas
             }
         }.invokeOnCompletion { // on attend que la coroutine soit terminée pour exécuter le code suivant
             binding.spinnerPromo.setSelection(promoOptions.indexOfFirst { it.code == viewModel.promo }) // on sélectionne la promo spécifiée dans le ViewModel dans le spinner pour le cas où la session est récupérée
-            refreshPage() // la page est rafraîchie
+            lifecycleScope.launch(Dispatchers.Main) {
+                _affichage = AffichageSemaine(viewModel.session, LayoutInflater.from(requireContext()), binding.scrollEdt, viewLifecycleOwner.lifecycleScope) // on initialise l'affichage de l'emploi du temps à un affichage par semaine
+                binding.llBandeau.allViews.forEach {
+                    val backgroundColor = viewModel.session.bandeauColor
+                    val textColor = viewModel.session.bandeauTextColor
+
+                    it.setBackgroundColor(backgroundColor)
+                    it.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+
+                    if (it is TextView) it.setTextColor(textColor)
+                    if (it is ImageButton) it.setColorFilter(textColor)
+                }
+                refreshPage() // la page est rafraîchie
+            }
         }
     }
 

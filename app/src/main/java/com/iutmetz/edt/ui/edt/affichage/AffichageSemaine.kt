@@ -10,21 +10,24 @@ import android.widget.GridLayout.LayoutParams
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.iutmetz.edt.R
 import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 import com.iutmetz.edt.data.local.entity.CoursEntity
+import com.iutmetz.edt.data.local.entity.SessionEntity
 import com.iutmetz.edt.databinding.LayoutCoursBinding
 import com.iutmetz.edt.databinding.LayoutEdtSemaineBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi du temps par semaine
+    session: SessionEntity,
     inflater: LayoutInflater,
     parent: ViewGroup, // on définit les arguments nécessaires pour l'affichage
     private val lifecycleScope: LifecycleCoroutineScope // on utilise un scope de coroutine pour gérer les tâches asynchrones ce qui est nécessaire pour afficher les cours de l'emploi du temps
-) : Affichage() {
+) : Affichage(session) {
     private var density = 0f // on utilise une densité pour calculer des tailles en pixels
     private val rowHeight = 30
     private val columnWidth = 60
@@ -89,6 +92,12 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
                     tvSalle.text = cours.salle // on définit le texte de la salle de la vue
                     tvTitre.text = titre // on définit le texte du titre de la vue
                     root.layoutParams = param // on applique les paramètres à la vue
+
+                    mcvCours.allViews.forEach {
+                        it.setBackgroundColor(session.coursColor)
+
+                        if (it is TextView) it.setTextColor(session.coursTextColor)
+                    }
                 }
 
                 binding.grid.addView(coursBinding.root) // on ajoute la vue au tableau
