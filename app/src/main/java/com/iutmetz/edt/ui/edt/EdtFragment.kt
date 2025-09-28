@@ -1,6 +1,5 @@
 package com.iutmetz.edt.ui.edt
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.view.allViews
-import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textview.MaterialTextView
@@ -19,14 +17,15 @@ import com.iutmetz.edt.R
 import com.iutmetz.edt.data.common.Promo
 import com.iutmetz.edt.data.common.Result
 import com.iutmetz.edt.data.local.entity.CoursEntity
+import com.iutmetz.edt.data.local.entity.SessionEntity
 import com.iutmetz.edt.databinding.FragmentEdtBinding
 import com.iutmetz.edt.ui.BaseFragment
 import com.iutmetz.edt.ui.edt.affichage.Affichage
 import com.iutmetz.edt.ui.edt.affichage.AffichageSemaine
+import com.iutmetz.edt.util.CustomViewAdapter
 import com.iutmetz.edt.util.DateConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.util.Date
 import kotlin.getValue
 
@@ -75,58 +74,6 @@ class EdtFragment :
     ) { // cette fonction est appelée lorsque la vue est créée et sert à initialiser les interactions avec l'utilisateur et la logique du fragment
         super.onViewCreated(view, savedInstanceState)
 
-        adapterPromo = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            promoOptions
-        ) // on initialise les adapters
-        adapterGroupe =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, viewModel.groupes)
-
-        binding.spinnerPromo.apply { // on initialise le spinner promo, la méthode apply permet d'éviter de répéter binding.spinnerPromo car tout le code est effectué avec binding.spinnerPromo comme this,
-            // en kotlin il n'est pas nécessaire d'écrire this, il s'agit d'une méthode d'écriture simple pour bien regroupper le code et éviter les répétitions
-            adapter = adapterPromo // on initialise l'adapter du spinner
-            onItemSelectedListener = object :
-                AdapterView.OnItemSelectedListener { // on initialise un listener pour le spinner pour définir le code à éxecuter lors d'un changement de promo
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (spinnerTrigger) { // si le spinner peut être déclenché
-                        viewModel.promo =
-                            promoOptions[position].code // on met à jour le code de la promo dans le ViewMdel
-                        viewModel.groupe = "" // on met à jour le groupe dans le ViewModel
-                        refreshPage() // la page est rafraîchie
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-        }
-
-        binding.spinnerGroupe.apply { // idem que pour le spinner promo
-            adapter = adapterGroupe
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (viewModel.groupes[position] != viewModel.groupe) {
-                        if (spinnerTrigger) {
-                            viewModel.groupe = viewModel.groupes[position]
-                            refreshPage()
-                        }
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-        }
-
         binding.apply {
             ibLeft.setOnClickListener { // on initialise les boutons pour naviguer entre les semaines
                 viewModel.previousWeek() // on change la date dans le ViewModel à la semaine dernière
@@ -164,18 +111,15 @@ class EdtFragment :
         }
 
         showProgressIndicator(true) // on affiche un indicateur de chargement
+
+        var session: SessionEntity? = null
+
         lifecycleScope.launch(Dispatchers.IO) { // on lance une coroutine qui est un thread séparé du thread principal pour charger les données de l'emploi du temps,
             // à noter que dans kotlin les fonctions asynchrone sont des fonctions suspend, elles bloquent complètement le thread courant et doivent donc être lancées dans une coroutine
-            val session =
+            session =
                 viewModel.chargeSession(requireContext().theme) // on charge la session de l'utilisateur
-
-            if (session == null) {
-                viewModel.promo =
-                    promoOptions[binding.spinnerPromo.selectedItemPosition].code // le code de promo est mit par défaut au premier élément du spinner si la session n'existe pas
-            }
         }
             .invokeOnCompletion { // on attend que la coroutine soit terminée pour exécuter le code suivant
-                binding.spinnerPromo.setSelection(promoOptions.indexOfFirst { it.code == viewModel.promo }) // on sélectionne la promo spécifiée dans le ViewModel dans le spinner pour le cas où la session est récupérée
                 lifecycleScope.launch(Dispatchers.Main) {
                     _affichage = AffichageSemaine(
                         viewModel.session,
@@ -186,6 +130,74 @@ class EdtFragment :
 
                     val backgroundColor = viewModel.session.bandeauColor
                     val textColor = viewModel.session.bandeauTextColor
+
+                    adapterPromo = CustomViewAdapter(
+                        requireContext(),
+                        R.layout.spinner_text,
+                        promoOptions,
+                        backgroundColor,
+                        textColor
+                    ) // on initialise les adapters
+                    adapterGroupe = CustomViewAdapter(
+                        requireContext(),
+                        R.layout.spinner_text,
+                        viewModel.groupes,
+                        backgroundColor,
+                        textColor
+                    )
+
+                    binding.spinnerPromo.apply { // on initialise le spinner promo, la méthode apply permet d'éviter de répéter binding.spinnerPromo car tout le code est effectué avec binding.spinnerPromo comme this,
+                        // en kotlin il n'est pas nécessaire d'écrire this, il s'agit d'une méthode d'écriture simple pour bien regroupper le code et éviter les répétitions
+                        adapter = adapterPromo // on initialise l'adapter du spinner
+                        onItemSelectedListener = object :
+                            AdapterView.OnItemSelectedListener { // on initialise un listener pour le spinner pour définir le code à éxecuter lors d'un changement de promo
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                if (view is TextView) view.setTextColor(textColor)
+                                if (spinnerTrigger) { // si le spinner peut être déclenché
+                                    viewModel.promo =
+                                        promoOptions[position].code // on met à jour le code de la promo dans le ViewMdel
+                                    viewModel.groupe = "" // on met à jour le groupe dans le ViewModel
+                                    refreshPage() // la page est rafraîchie
+                                }
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                        }
+                    }
+
+                    binding.spinnerGroupe.apply { // idem que pour le spinner promo
+                        adapter = adapterGroupe
+                        onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                if (view is TextView) view.setTextColor(textColor)
+                                if (viewModel.groupes[position] != viewModel.groupe) {
+                                    if (spinnerTrigger) {
+                                        viewModel.groupe = viewModel.groupes[position]
+                                        refreshPage()
+                                    }
+                                }
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                        }
+                    }
+
+                    if (session == null) {
+                        viewModel.promo =
+                            promoOptions[binding.spinnerPromo.selectedItemPosition].code // le code de promo est mit par défaut au premier élément du spinner si la session n'existe pas
+                    }
+
+                    binding.spinnerPromo.setSelection(promoOptions.indexOfFirst { it.code == viewModel.promo }) // on sélectionne la promo spécifiée dans le ViewModel dans le spinner pour le cas où la session est récupérée
 
                     binding.llBandeau.allViews.forEach {
                         if (it is Spinner) it.background.setTint(textColor)

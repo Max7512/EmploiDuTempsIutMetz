@@ -94,10 +94,10 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
                     root.layoutParams = param // on applique les paramètres à la vue
 
                     mcvCours.setCardBackgroundColor(session.coursColor)
-                    clContent.allViews.forEach {
+                    clContent.allViews.forEach { // la couleur d'arrière plan est appliquée aux cases de cours
                         it.setBackgroundColor(session.coursColor)
 
-                        if (it is TextView) it.setTextColor(session.coursTextColor)
+                        if (it is TextView) it.setTextColor(session.coursTextColor) // la couleur du texte est appliquée aux textes des cases de cours
                     }
                 }
 
