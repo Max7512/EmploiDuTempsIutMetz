@@ -1,12 +1,15 @@
 <resources>
     <!-- Base application theme. -->
+    <style name="Base.Theme.Activity" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="bandeauColor">@color/blue</item>
+        <item name="bandeauTextColor">@color/white</item>
+        <item name="coursColor">@color/lightBlue</item>
+        <item name="coursTextColor">@color/white</item>
+    </style>
+
     <style name="Base.Theme.Edt" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:textColor">@color/black</item>
         <item name="android:background">@color/lightBackgroundSecondary</item>
-        <item name="bandeauColor">@color/blue</item>
-        <item name="bandeauTextColor">@color/white</item>
-        <item name="coursColor">@color/blue</item>
-        <item name="coursTextColor">@color/white</item>
     </style>
 
     <style name="Base.Theme.Affichage" parent="Base.Theme.Edt">
