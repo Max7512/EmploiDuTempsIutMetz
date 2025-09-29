@@ -28,7 +28,7 @@ abstract class AppDatabase : RoomDatabase() { // la base de données utilise le 
     abstract fun abbreviationDao(): AbbreviationDao // les différents DAO sont mis à disposition grâce à ces fonctions qui seront automatiquement générées par room
     abstract fun sessionDao(): SessionDao
     companion object {
-        const val DB_VERSION: Int = 1 // la version de la base de données à changer à chaque modification de la base de données
+        const val DB_VERSION: Int = 2 // la version de la base de données à changer à chaque modification de la base de données
         const val DB_NAME = "AppDatabase" // le nom de la base de données
     }
 
