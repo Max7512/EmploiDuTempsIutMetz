@@ -60,8 +60,8 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
                 null, R.style.Base_Theme_Edt)
             linearLayout.layoutParams = LayoutParams().apply { // on définit les paramètres de la vue
                 rowSpec = GridLayout.spec(row + 1, 1) // on définit la ligne et la colonne de la vue
-                columnSpec = GridLayout.spec(0, 1)
-                width = (heureColumnWidth.toFloat() * density).toInt() // on définit la largeur et la hauteur de la vue
+                columnSpec = GridLayout.spec(0, 7)
+                width = LayoutParams.MATCH_PARENT // on définit la largeur et la hauteur de la vue
                 height = (rowHeight.toFloat() * density).toInt()
             }
 

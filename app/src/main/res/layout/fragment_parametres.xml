@@ -38,10 +38,15 @@
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollParametres"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:theme="@style/Theme.Edt">
+
+            <LinearLayout
+                android:id="@+id/llParametres"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"/>
 
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

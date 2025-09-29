@@ -74,6 +74,8 @@ class EdtFragment :
     ) { // cette fonction est appelée lorsque la vue est créée et sert à initialiser les interactions avec l'utilisateur et la logique du fragment
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.gitUrl = resources.getString(R.string.gitUrl)
+
         binding.apply {
             ibLeft.setOnClickListener { // on initialise les boutons pour naviguer entre les semaines
                 viewModel.previousWeek() // on change la date dans le ViewModel à la semaine dernière
@@ -207,12 +209,6 @@ class EdtFragment :
                         if (it !is Spinner) it.setBackgroundColor(backgroundColor)
                     }
 
-                    for (i in 0..<binding.spinnerPromo.childCount) {
-                        val child = binding.spinnerPromo.getChildAt(i)
-                        if (child is TextView) child.setTextColor(textColor)
-                        child.setBackgroundColor(backgroundColor)
-                    }
-
                     refreshPage() // la page est rafraîchie
                 }
             }
@@ -248,13 +244,6 @@ class EdtFragment :
 
                     if (groupeVide) binding.spinnerGroupe.setSelection(0) // si le groupe est vide, on met le premier élément du spinner par défaut
                     else binding.spinnerGroupe.setSelection(viewModel.groupes.indexOf(viewModel.groupe)) // sinon on met le groupe actuel dans le spinner
-
-                    val textColor = viewModel.session.bandeauTextColor
-
-                    for (i in 0..<binding.spinnerGroupe.childCount) {
-                        val child = binding.spinnerGroupe.getChildAt(i)
-                        if (child is MaterialTextView) child.setTextColor(textColor)
-                    }
 
                     binding.spinnerGroupe.visibility =
                         if (adapterGroupe.isEmpty) View.GONE // on cache le spinner si il n'y a pas de groupe

@@ -20,4 +20,8 @@
     <string name="confirmer">Confirmer</string>
     <string name="quitter">Quitter</string>
     <string name="quitter_message">Êtes-vous sûr de vouloir quitter sans sauvegarder ?</string>
+    <string name="support">Un avis, une suggestion, un problème ?</string>
+    <string name="support_bug">Signaler un bug</string>
+    <string name="support_discussion">Partager un avis</string>
+    <string name="gitUrl" translatable="false">https://github.com/Max7512/EmploiDuTempsIutMetz</string>
 </resources>

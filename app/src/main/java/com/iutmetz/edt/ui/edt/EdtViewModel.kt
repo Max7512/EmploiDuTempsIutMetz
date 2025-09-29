@@ -30,6 +30,8 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
 
     var groupe: String = ""
 
+    var gitUrl: String = ""
+
     var groupes: MutableList<String> = mutableListOf()
 
     private var _date: Date = DateConverter.previousMonday(Date()) // on initialise la date au dernier Lundi, le début de la semaine actuelle
@@ -116,7 +118,7 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
     }
 
     suspend fun estAJour(): Boolean { // cette fonction permet de vérifier si la version du projet est à jour
-        val version = sessionRepository.checkVersion() // on récupère la version du projet
+        val version = sessionRepository.checkVersion(gitUrl) // on récupère la version du projet
         version?.let {
             return BuildConfig.VERSION_NAME >= it.replace("v", "") // on compare la version du projet avec la version du projet sur le github
         }

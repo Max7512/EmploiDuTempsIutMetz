@@ -21,6 +21,7 @@ import com.iutmetz.edt.ui.BaseFragment
 import com.iutmetz.edt.ui.dialog.ConfirmationDialog
 import com.iutmetz.edt.ui.parametres.parametre.Parametre
 import com.iutmetz.edt.ui.parametres.parametre.ParametreCouleurs
+import com.iutmetz.edt.ui.parametres.parametre.ParametreSupport
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.getValue
@@ -60,7 +61,8 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les
                 }
 
                 parametreList = listOf( // on initialise la liste de paramètres
-                    ParametreCouleurs(viewModel.session, binding.clContent, onConfirmLiveData, layoutInflater, binding.scrollParametres)
+                    ParametreCouleurs(viewModel.session, binding.clContent, onConfirmLiveData, layoutInflater, binding.llParametres),
+                    ParametreSupport(resources.getString(R.string.gitUrl), requireContext(), layoutInflater, binding.llParametres)
                 )
 
                 parametreList.forEach { // on initialise chaque paramètre

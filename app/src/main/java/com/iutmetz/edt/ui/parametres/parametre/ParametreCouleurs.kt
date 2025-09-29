@@ -36,7 +36,7 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
         binding.apply { // on initialise les interactions avec l'utilisateur
             ibCours.setOnClickListener { // on affiche le color picker lorsque l'on clique sur le bouton
                 onColorPicked = { color -> // on définit la fonction de callback
-                    session.coursColor = color
+                    session!!.coursColor = color
                 }
                 changePopupVisibility(true) // on affiche le popup
                 colorPickerView.visibility = View.VISIBLE // on affiche le color picker
@@ -44,21 +44,21 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
 
             ibCoursText.setOnClickListener { // idem
                 onColorPicked = { color ->
-                    session.coursTextColor = color
+                    session!!.coursTextColor = color
                 }
                 showColorPicker(true)
             }
 
             ibBandeau.setOnClickListener { // idem
                 onColorPicked = { color ->
-                    session.bandeauColor = color
+                    session!!.bandeauColor = color
                 }
                 showColorPicker(true)
             }
 
             ibBandeauText.setOnClickListener { // idem
                 onColorPicked = { color ->
-                    session.bandeauTextColor = color
+                    session!!.bandeauTextColor = color
                 }
                 showColorPicker(true)
             }
@@ -69,7 +69,7 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
 
     fun changeButtonsColor() { // cette fonction permet de changer la couleur des boutons
         binding.apply { // on change la couleur des boutons
-            ibCours.setColorFilter(session.coursColor)
+            ibCours.setColorFilter(session!!.coursColor)
             ibCoursText.setColorFilter(session.coursTextColor)
             ibBandeau.setColorFilter(session.bandeauColor)
             ibBandeauText.setColorFilter(session.bandeauTextColor)
@@ -81,7 +81,7 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
         if (show) {
             colorPickerView.visibility = View.VISIBLE
             brightnessSlideBar.visibility = View.VISIBLE
-            onConfirmLiveData.value = {
+            changeConfirmCallback {
                 onColorPicked(colorPickerView.color)
                 changeButtonsColor()
             }
