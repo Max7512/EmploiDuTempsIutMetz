@@ -14,13 +14,15 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llBandeau"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/Base.Theme.Bandeau"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:theme="@style/Base.Theme.Bandeau">
 
             <LinearLayout
+                android:id="@+id/llSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -31,21 +33,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:theme="@style/Base.Theme.Spinner"
                     android:backgroundTint="@color/white"
-                    tools:listitem="@layout/spinner_text"/>
+                    android:theme="@style/Base.Theme.Spinner"
+                    tools:listitem="@layout/spinner_text" />
 
                 <Spinner
                     android:id="@+id/spinnerGroupe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:theme="@style/Base.Theme.Spinner"
                     android:backgroundTint="@color/white"
-                    tools:listitem="@layout/spinner_text"/>
+                    android:theme="@style/Base.Theme.Spinner"
+                    tools:listitem="@layout/spinner_text" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBoutons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -57,7 +60,7 @@
                     android:src="@drawable/ic_event"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/ibLeft"
@@ -67,7 +70,7 @@
                     android:src="@drawable/ic_arrow_left"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/ibCalendar"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvRange"
@@ -90,7 +93,18 @@
                     android:src="@drawable/ic_arrow_left"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/ibParametres"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_parametres"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvBandeau"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bandeau"
+        app:layout_constraintBottom_toBottomOf="@id/ibBandeau"
+        app:layout_constraintEnd_toStartOf="@id/ibBandeau"
+        app:layout_constraintTop_toTopOf="@id/ibBandeau" />
+
+    <ImageButton
+        android:id="@+id/ibBandeau"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginVertical="5dp"
+        android:src="@drawable/ic_cercle"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintEnd_toEndOf="@id/ibBandeauText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBandeauText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/texteBandeau"
+        app:layout_constraintBottom_toBottomOf="@id/ibBandeauText"
+        app:layout_constraintEnd_toStartOf="@id/ibBandeauText"
+        app:layout_constraintTop_toTopOf="@id/ibBandeauText" />
+
+    <ImageButton
+        android:id="@+id/ibBandeauText"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginVertical="5dp"
+        android:src="@drawable/ic_cercle"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintStart_toEndOf="@id/tvBandeauText"
+        app:layout_constraintTop_toBottomOf="@id/ibBandeau" />
+
+    <TextView
+        android:id="@+id/tvCours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cours"
+        app:layout_constraintBottom_toBottomOf="@id/ibCours"
+        app:layout_constraintEnd_toStartOf="@id/ibCours"
+        app:layout_constraintTop_toTopOf="@id/ibCours" />
+
+    <ImageButton
+        android:id="@+id/ibCours"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginVertical="5dp"
+        android:src="@drawable/ic_cercle"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintEnd_toEndOf="@id/ibCoursText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCoursText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/texteCours"
+        app:layout_constraintBottom_toBottomOf="@id/ibCoursText"
+        app:layout_constraintEnd_toStartOf="@id/ibCoursText"
+        app:layout_constraintTop_toTopOf="@id/ibCoursText" />
+
+    <ImageButton
+        android:id="@+id/ibCoursText"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginVertical="5dp"
+        android:src="@drawable/ic_cercle"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ibCours" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
