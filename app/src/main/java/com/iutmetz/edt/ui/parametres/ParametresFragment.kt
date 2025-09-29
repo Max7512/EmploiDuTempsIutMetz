@@ -1,0 +1,133 @@
+package com.iutmetz.edt.ui.parametres
+
+import android.os.Bundle
+import android.util.TypedValue
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.allViews
+import androidx.core.view.children
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.iutmetz.edt.R
+import com.iutmetz.edt.databinding.FragmentParametresBinding
+import com.iutmetz.edt.ui.BaseFragment
+import com.iutmetz.edt.ui.dialog.ConfirmationDialog
+import com.iutmetz.edt.ui.parametres.parametre.Parametre
+import com.iutmetz.edt.ui.parametres.parametre.ParametreCouleurs
+import com.iutmetz.edt.ui.parametres.parametre.ParametreSupport
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.getValue
+import kotlin.sequences.forEach
+
+class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les paramètres du package parametre et hérite des fonctions de base définies dans la classe BaseFragment
+    private val viewModel: ParametresViewModel by viewModels() // on utilise un view model pour gérer les données des paramètres
+    private var _binding: FragmentParametresBinding? = null // on utilise un binding pour accéder aux éléments de la vue
+    val binding get() = _binding!! // on utilise un getteur pour accéder au binding tout en empechant d'en modifier la valeur
+    private var parametreList: List<Parametre> = listOf() // on initialise une liste de paramètres vide
+
+    private var onConfirmLiveData = MutableLiveData({}) // cet objet contient une fonction qui est appelée lorsque l'utilisateur clique sur le bouton de confirmation du popup, cette fonction peut être modifée dans les paramètres en donnant la référence de l'object
+
+    override fun onCreateView( // cette fonction est appelée lorsque le fragment est créé et sert à initialiser la vue
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentParametresBinding.inflate(inflater, container, false) // on initialise la vue de la page
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // cette fonction est appelée lorsque la vue est créée et sert à initialiser les interactions avec l'utilisateur et la logique du fragment
+        super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.chargeSession(requireContext().theme) // on charge la session de l'utilisateur
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                val backgroundColor = viewModel.session.bandeauColor
+                val textColor = viewModel.session.bandeauTextColor
+
+                binding.llBandeau.allViews.forEach {
+                    if (it is TextView) it.setTextColor(textColor)
+                    if (it is ImageButton) it.setColorFilter(textColor)
+
+                    it.setBackgroundColor(backgroundColor)
+                }
+
+                parametreList = listOf( // on initialise la liste de paramètres
+                    ParametreCouleurs(viewModel.session, binding.clContent, onConfirmLiveData, layoutInflater, binding.llParametres),
+                    ParametreSupport(resources.getString(R.string.gitUrl), requireContext(), layoutInflater, binding.llParametres)
+                )
+
+                parametreList.forEach { // on initialise chaque paramètre
+                    it.initView()
+                }
+            }
+        }
+
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) { // on gère le comportement du bouton retour
+            override fun handleOnBackPressed() {
+                if (viewModel.session == viewModel.sessionOriginal) // si la session n'a pas été modifiée on revient en arrière
+                    findNavController().popBackStack()
+                else // sinon on affiche une boite de dialogue de confirmation
+                    context?.let {
+                        ConfirmationDialog(
+                            it,
+                            R.string.quitter,
+                            R.string.quitter_message,
+                            onOkClicked = {
+                                findNavController().popBackStack()
+                            },
+                            onCancelClicked = {
+
+                            }).show()
+                    }
+            }
+        })
+
+        binding.apply { // on initialise les interactions avec l'utilisateur
+            ibCancel.setOnClickListener { // si on clique sur le bouton de retour du popup on le cache
+                clContent.children.forEach {
+                    it.visibility = View.GONE
+                }
+                clPopup.visibility = View.GONE
+            }
+
+            ibConfirm.setOnClickListener { // si on clique sur le bouton de confirmation du popup, un script est executé et on le cache
+                onConfirmLiveData.value?.invoke()
+                clContent.children.forEach {
+                    it.visibility = View.GONE
+                }
+                clPopup.visibility = View.GONE
+            }
+
+            clPopup.setOnClickListener { // si on clique sur l'arrière plan popup on le cache
+                clContent.children.forEach {
+                    it.visibility = View.GONE
+                }
+                clPopup.visibility = View.GONE
+            }
+
+            ibSave.setOnClickListener { // si on clique sur le bouton de sauvegarde on sauvegarde la session et on revient en arrière
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.saveSession()
+
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        findNavController().popBackStack()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroyView() { // cette fonction est appelée lorsque la vue est détruite
+        super.onDestroyView()
+        _binding = null
+    }
+}

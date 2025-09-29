@@ -7,5 +7,5 @@ interface SessionRepository { // on définit une interface qui permet de défini
 
     suspend fun saveSession(session: SessionEntity)
 
-    suspend fun checkVersion(): String?
+    suspend fun checkVersion(githubBaseUrl: String): String?
 }

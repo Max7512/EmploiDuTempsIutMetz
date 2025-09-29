@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="coursColor" format="reference"/>
+    <attr name="coursTextColor" format="reference"/>
+    <attr name="bandeauColor" format="reference"/>
+    <attr name="bandeauTextColor" format="reference"/>
+</resources>

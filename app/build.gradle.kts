@@ -5,6 +5,7 @@ plugins {
     id("androidx.room")
     kotlin("kapt")
     id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 val productionBaseUrl = "\"https://dptinfo.iutmetz.univ-lorraine.fr/applis/edt/serveur/\""
@@ -81,6 +82,17 @@ android {
     }
 }
 
+configurations.all {
+    exclude(mapOf(
+        Pair("group", "xmlpull"),
+        Pair("module", "xmlpull")
+    ))
+    exclude(mapOf(
+        Pair("group", "xpp3"),
+        Pair("module", "xpp3_min")
+    ))
+}
+
 dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.livedata.ktx)
@@ -118,6 +130,10 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.10"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    implementation("com.github.skydoves:colorpickerview:2.3.0")
+
+    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.9.4")
 }
 
 kapt {

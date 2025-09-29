@@ -5,6 +5,10 @@ allprojects {
             mavenCentral()
             maven { url = uri("https://jitpack.io") }
         }
+        dependencies {
+            val nav_version = "2.9.5"
+            classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+        }
     }
 }
 

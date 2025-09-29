@@ -10,21 +10,24 @@ import android.widget.GridLayout.LayoutParams
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.iutmetz.edt.R
 import com.iutmetz.edt.data.local.entity.AbbreviationEntity
 import com.iutmetz.edt.data.local.entity.CoursEntity
+import com.iutmetz.edt.data.local.entity.SessionEntity
 import com.iutmetz.edt.databinding.LayoutCoursBinding
 import com.iutmetz.edt.databinding.LayoutEdtSemaineBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi du temps par semaine
+    session: SessionEntity,
     inflater: LayoutInflater,
     parent: ViewGroup, // on définit les arguments nécessaires pour l'affichage
-    lifecycleScope: LifecycleCoroutineScope
-) : Affichage(inflater, parent, lifecycleScope) {
+    private val lifecycleScope: LifecycleCoroutineScope // on utilise un scope de coroutine pour gérer les tâches asynchrones ce qui est nécessaire pour afficher les cours de l'emploi du temps
+) : Affichage(session) {
     private var density = 0f // on utilise une densité pour calculer des tailles en pixels
     private val rowHeight = 30
     private val columnWidth = 60
@@ -57,8 +60,8 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
                 null, R.style.Base_Theme_Edt)
             linearLayout.layoutParams = LayoutParams().apply { // on définit les paramètres de la vue
                 rowSpec = GridLayout.spec(row + 1, 1) // on définit la ligne et la colonne de la vue
-                columnSpec = GridLayout.spec(0, 1)
-                width = (heureColumnWidth.toFloat() * density).toInt() // on définit la largeur et la hauteur de la vue
+                columnSpec = GridLayout.spec(0, 7)
+                width = LayoutParams.MATCH_PARENT // on définit la largeur et la hauteur de la vue
                 height = (rowHeight.toFloat() * density).toInt()
             }
 
@@ -89,6 +92,13 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
                     tvSalle.text = cours.salle // on définit le texte de la salle de la vue
                     tvTitre.text = titre // on définit le texte du titre de la vue
                     root.layoutParams = param // on applique les paramètres à la vue
+
+                    mcvCours.setCardBackgroundColor(session.coursColor)
+                    clContent.allViews.forEach { // la couleur d'arrière plan est appliquée aux cases de cours
+                        it.setBackgroundColor(session.coursColor)
+
+                        if (it is TextView) it.setTextColor(session.coursTextColor) // la couleur du texte est appliquée aux textes des cases de cours
+                    }
                 }
 
                 binding.grid.addView(coursBinding.root) // on ajoute la vue au tableau

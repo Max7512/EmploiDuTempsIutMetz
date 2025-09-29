@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f27449dc734696317c76f137fefcf3c9",
+    "identityHash": "f82315e4a7ba99771f96398209bf0307",
     "entities": [
       {
         "tableName": "cours",
@@ -94,7 +94,7 @@
       },
       {
         "tableName": "session",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`promo` TEXT NOT NULL, `groupe` TEXT NOT NULL, PRIMARY KEY(`promo`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`promo` TEXT NOT NULL, `groupe` TEXT NOT NULL, `coursColor` INTEGER NOT NULL, `coursTextColor` INTEGER NOT NULL, `bandeauColor` INTEGER NOT NULL, `bandeauTextColor` INTEGER NOT NULL, PRIMARY KEY(`promo`))",
         "fields": [
           {
             "fieldPath": "promo",
@@ -106,6 +106,30 @@
             "fieldPath": "groupe",
             "columnName": "groupe",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coursColor",
+            "columnName": "coursColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coursTextColor",
+            "columnName": "coursTextColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bandeauColor",
+            "columnName": "bandeauColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bandeauTextColor",
+            "columnName": "bandeauTextColor",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -122,7 +146,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f27449dc734696317c76f137fefcf3c9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f82315e4a7ba99771f96398209bf0307')"
     ]
   }
 }
