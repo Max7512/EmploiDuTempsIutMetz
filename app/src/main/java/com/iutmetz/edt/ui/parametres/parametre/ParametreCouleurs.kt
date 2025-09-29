@@ -38,8 +38,7 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
                 onColorPicked = { color -> // on définit la fonction de callback
                     session!!.coursColor = color
                 }
-                changePopupVisibility(true) // on affiche le popup
-                colorPickerView.visibility = View.VISIBLE // on affiche le color picker
+                showColorPicker(true) // on affiche le popup avec le color picker et le slider de luminosité
             }
 
             ibCoursText.setOnClickListener { // idem

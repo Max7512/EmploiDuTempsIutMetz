@@ -23,7 +23,6 @@
         android:text="@string/support_bug"
         android:textColor="@color/white"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ibDiscussion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSupport" />
@@ -37,9 +36,23 @@
         android:text="@string/support_discussion"
         android:textColor="@color/white"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ibBug"
         app:layout_constraintTop_toBottomOf="@id/tvSupport" />
+
+    <Button
+        android:id="@+id/ibGitReleases"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/lightBlue"
+        android:text="@string/support_releases"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ibBug" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

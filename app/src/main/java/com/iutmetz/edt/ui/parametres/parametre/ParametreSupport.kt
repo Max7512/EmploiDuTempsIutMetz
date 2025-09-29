@@ -25,6 +25,10 @@ class ParametreSupport(
             ibDiscussion.setOnClickListener {
                 renvoieGit("/discussions")
             }
+
+            ibGitReleases.setOnClickListener {
+                renvoieGit("/releases")
+            }
         }
     }
 
