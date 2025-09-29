@@ -1,6 +1,7 @@
 package com.iutmetz.edt.ui.parametres
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.iutmetz.edt.R
@@ -29,6 +31,8 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les
     private var _binding: FragmentParametresBinding? = null // on utilise un binding pour accéder aux éléments de la vue
     val binding get() = _binding!! // on utilise un getteur pour accéder au binding tout en empechant d'en modifier la valeur
     private var parametreList: List<Parametre> = listOf() // on initialise une liste de paramètres vide
+
+    private var onConfirmLiveData = MutableLiveData({}) // cet objet contient une fonction qui est appelée lorsque l'utilisateur clique sur le bouton de confirmation du popup, cette fonction peut être modifée dans les paramètres en donnant la référence de l'object
 
     override fun onCreateView( // cette fonction est appelée lorsque le fragment est créé et sert à initialiser la vue
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +60,7 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les
                 }
 
                 parametreList = listOf( // on initialise la liste de paramètres
-                    ParametreCouleurs(viewModel.session, binding.clContent, layoutInflater, binding.scrollParametres)
+                    ParametreCouleurs(viewModel.session, binding.clContent, onConfirmLiveData, layoutInflater, binding.scrollParametres)
                 )
 
                 parametreList.forEach { // on initialise chaque paramètre
@@ -87,6 +91,14 @@ class ParametresFragment : BaseFragment() { // ce fragment permet d'afficher les
 
         binding.apply { // on initialise les interactions avec l'utilisateur
             ibCancel.setOnClickListener { // si on clique sur le bouton de retour du popup on le cache
+                clContent.children.forEach {
+                    it.visibility = View.GONE
+                }
+                clPopup.visibility = View.GONE
+            }
+
+            ibConfirm.setOnClickListener { // si on clique sur le bouton de confirmation du popup, un script est executé et on le cache
+                onConfirmLiveData.value?.invoke()
                 clContent.children.forEach {
                     it.visibility = View.GONE
                 }

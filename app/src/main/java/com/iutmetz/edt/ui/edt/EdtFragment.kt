@@ -249,7 +249,6 @@ class EdtFragment :
                     if (groupeVide) binding.spinnerGroupe.setSelection(0) // si le groupe est vide, on met le premier élément du spinner par défaut
                     else binding.spinnerGroupe.setSelection(viewModel.groupes.indexOf(viewModel.groupe)) // sinon on met le groupe actuel dans le spinner
 
-                    val backgroundColor = viewModel.session.bandeauColor
                     val textColor = viewModel.session.bandeauTextColor
 
                     for (i in 0..<binding.spinnerGroupe.childCount) {
