@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.iutmetz.edt.R
 import com.iutmetz.edt.data.local.entity.SessionEntity
 import com.iutmetz.edt.data.repository.SessionRepository
+import com.iutmetz.edt.util.SessionInit
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,26 +20,9 @@ class ParametresViewModel @Inject constructor( // cette classe permet de gérer 
     val sessionOriginal: SessionEntity get() = _sessionOriginal
     suspend fun chargeSession(theme: Resources.Theme): SessionEntity? { // cette fonction permet de charger la session de l'utilisateur si elle existe, sinon d'en créer une
         val session = sessionRepository.getSession() // on charge la session de l'utilisateur
-        if (session != null) { // si la session existe
-            _session = session
-        } else {
-            val typedValue = TypedValue()
-
-            theme.resolveAttribute(R.attr.coursColor, typedValue, true)
-            val coursColor = typedValue.data
-
-            theme.resolveAttribute(R.attr.coursTextColor, typedValue, true)
-            val coursTextColor = typedValue.data
-
-            theme.resolveAttribute(R.attr.bandeauColor, typedValue, true)
-            val bandeauColor = typedValue.data
-
-            theme.resolveAttribute(R.attr.bandeauTextColor, typedValue, true)
-            val bandeauTextColor = typedValue.data
-
-            _session = SessionEntity(coursColor = coursColor, coursTextColor = coursTextColor, bandeauColor = bandeauColor, bandeauTextColor = bandeauTextColor) // sinon on en crée une
-        }
-        _sessionOriginal = this.session.copy() // on copie la session pour comparer les changements plus tard
+        _session = session ?: SessionInit.withTheme(theme) // si la session existe on l'utilise sinon on en crée une
+        _sessionOriginal =
+            this.session.copy() // on copie la session pour comparer les changements plus tard
         return session // on retourne la session chargée au début
     }
 

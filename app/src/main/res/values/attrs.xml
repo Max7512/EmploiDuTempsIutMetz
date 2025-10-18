@@ -4,4 +4,7 @@
     <attr name="coursTextColor" format="reference"/>
     <attr name="bandeauColor" format="reference"/>
     <attr name="bandeauTextColor" format="reference"/>
+    <attr name="saeColor" format="reference"/>
+    <attr name="saeTextColor" format="reference"/>
+    <attr name="todayBackgroundColor" format="reference"/>
 </resources>
