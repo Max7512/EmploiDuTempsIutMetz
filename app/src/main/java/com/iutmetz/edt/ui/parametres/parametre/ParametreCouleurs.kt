@@ -10,6 +10,7 @@ import com.iutmetz.edt.data.local.entity.SessionEntity
 import com.iutmetz.edt.databinding.LayoutParametreCouleursBinding
 import com.skydoves.colorpickerview.ColorPickerView
 import com.skydoves.colorpickerview.listeners.ColorListener
+import com.skydoves.colorpickerview.listeners.ColorPickerViewListener
 import com.skydoves.colorpickerview.sliders.BrightnessSlideBar
 
 class ParametreCouleurs( // cette classe génère un paramètre qui permet de changer les couleurs de certains éléments de l'app
@@ -38,49 +39,49 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
                 onColorPicked = { color -> // on définit la fonction de callback
                     session!!.coursColor = color
                 }
-                showColorPicker(true) // on affiche le popup avec le color picker et le slider de luminosité
+                showColorPicker(true, session!!.coursColor) // on affiche le popup avec le color picker et le slider de luminosité
             }
 
             ibCoursText.setOnClickListener { // idem
                 onColorPicked = { color ->
                     session!!.coursTextColor = color
                 }
-                showColorPicker(true)
+                showColorPicker(true, session!!.coursTextColor)
             }
 
             ibBandeau.setOnClickListener { // idem
                 onColorPicked = { color ->
                     session!!.bandeauColor = color
                 }
-                showColorPicker(true)
+                showColorPicker(true, session!!.bandeauColor)
             }
 
             ibBandeauText.setOnClickListener { // idem
                 onColorPicked = { color ->
                     session!!.bandeauTextColor = color
                 }
-                showColorPicker(true)
+                showColorPicker(true, session!!.bandeauTextColor)
             }
 
             ibSae.setOnClickListener { // idem
                 onColorPicked = { color ->
                     session!!.saeColor = color
                 }
-                showColorPicker(true)
+                showColorPicker(true, session!!.saeColor)
             }
 
             ibSaeText.setOnClickListener { // idem
                 onColorPicked = { color ->
                     session!!.saeTextColor = color
                 }
-                showColorPicker(true)
+                showColorPicker(true, session!!.saeTextColor)
             }
 
             ibTodayBackground.setOnClickListener { // idem
                 onColorPicked = { color ->
                     session!!.todayBackgroundColor = color
                 }
-                showColorPicker(true)
+                showColorPicker(true, session!!.todayBackgroundColor)
             }
         }
 
@@ -99,9 +100,10 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
         }
     }
 
-    fun showColorPicker(show: Boolean) { // cette fonction permet d'afficher ou non le color picker et de changer la fonction de callback du bouton de confirmation
+    fun showColorPicker(show: Boolean, initialColor: Int) { // cette fonction permet d'afficher ou non le color picker et de changer la fonction de callback du bouton de confirmation
         changePopupVisibility(show)
         if (show) {
+            colorPickerView.setInitialColor(initialColor)
             colorPickerView.visibility = View.VISIBLE
             brightnessSlideBar.visibility = View.VISIBLE
             changeConfirmCallback {
