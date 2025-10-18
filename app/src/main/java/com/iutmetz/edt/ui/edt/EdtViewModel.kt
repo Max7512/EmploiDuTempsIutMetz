@@ -14,6 +14,7 @@ import com.iutmetz.edt.data.repository.EdtRepository
 import com.iutmetz.edt.data.repository.SessionRepository
 import com.iutmetz.edt.ui.edt.affichage.Affichage
 import com.iutmetz.edt.util.DateConverter
+import com.iutmetz.edt.util.SessionInit
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Retrofit
 import java.util.Date
@@ -81,26 +82,10 @@ class EdtViewModel @Inject constructor( // cette classe permet de gérer les don
 
     suspend fun chargeSession(theme: Resources.Theme): SessionEntity? { // cette fonction permet de charger la session de l'utilisateur si elle existe, sinon d'en créer une
         val session = sessionRepository.getSession() // on charge la session de l'utilisateur
+        _session = session ?: SessionInit.withTheme(theme) // si la session existe on l'utilise sinon on en crée une
         if (session != null) { // si la session existe
-            _session = session
             promo = session.promo // on met à jour les variables de la classe
             groupe = session.groupe
-        } else {
-            val typedValue = TypedValue()
-
-            theme.resolveAttribute(R.attr.coursColor, typedValue, true)
-            val coursColor = typedValue.data
-
-            theme.resolveAttribute(R.attr.coursTextColor, typedValue, true)
-            val coursTextColor = typedValue.data
-
-            theme.resolveAttribute(R.attr.bandeauColor, typedValue, true)
-            val bandeauColor = typedValue.data
-
-            theme.resolveAttribute(R.attr.bandeauTextColor, typedValue, true)
-            val bandeauTextColor = typedValue.data
-
-            _session = SessionEntity(promo, groupe, coursColor, coursTextColor, bandeauColor, bandeauTextColor) // sinon on en crée une
         }
         return session // on retourne la session chargée au début
     }

@@ -11,8 +11,8 @@ abstract class SessionDao() { // cette classe sert à gérer la session dans la 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(session: SessionEntity)
 
-    @Query("UPDATE session SET groupe = :groupe, promo = :promo, coursColor = :coursColor, coursTextColor = :coursTextColor, bandeauColor = :bandeauColor, bandeauTextColor = :bandeauTextColor WHERE 1 = 1")
-    abstract suspend fun update(promo: String, groupe: String, coursColor: Int, coursTextColor: Int, bandeauColor: Int, bandeauTextColor: Int)
+    @Query("UPDATE session SET groupe = :groupe, promo = :promo, coursColor = :coursColor, coursTextColor = :coursTextColor, bandeauColor = :bandeauColor, bandeauTextColor = :bandeauTextColor, saeColor = :saeColor, saeTextColor = :saeTextColor, todayBackgroundColor = :todayBackgroundColor WHERE 1 = 1")
+    abstract suspend fun update(promo: String, groupe: String, coursColor: Int, coursTextColor: Int, bandeauColor: Int, bandeauTextColor: Int, saeColor: Int, saeTextColor: Int, todayBackgroundColor: Int)
 
     @Query("SELECT * FROM session")
     abstract suspend fun getSession(): List<SessionEntity>

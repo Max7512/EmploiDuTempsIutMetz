@@ -61,6 +61,27 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
                 }
                 showColorPicker(true)
             }
+
+            ibSae.setOnClickListener { // idem
+                onColorPicked = { color ->
+                    session!!.saeColor = color
+                }
+                showColorPicker(true)
+            }
+
+            ibSaeText.setOnClickListener { // idem
+                onColorPicked = { color ->
+                    session!!.saeTextColor = color
+                }
+                showColorPicker(true)
+            }
+
+            ibTodayBackground.setOnClickListener { // idem
+                onColorPicked = { color ->
+                    session!!.todayBackgroundColor = color
+                }
+                showColorPicker(true)
+            }
         }
 
         changeButtonsColor()
@@ -72,6 +93,9 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
             ibCoursText.setColorFilter(session.coursTextColor)
             ibBandeau.setColorFilter(session.bandeauColor)
             ibBandeauText.setColorFilter(session.bandeauTextColor)
+            ibSae.setColorFilter(session.saeColor)
+            ibSaeText.setColorFilter(session.saeTextColor)
+            ibTodayBackground.setColorFilter(session.todayBackgroundColor)
         }
     }
 

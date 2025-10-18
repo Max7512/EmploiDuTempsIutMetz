@@ -1,7 +1,5 @@
 package com.iutmetz.edt.ui.edt.affichage
 
-import android.content.res.Resources
-import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +8,7 @@ import android.widget.GridLayout.LayoutParams
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.allViews
 import androidx.core.view.children
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -21,25 +20,32 @@ import com.iutmetz.edt.databinding.LayoutCoursBinding
 import com.iutmetz.edt.databinding.LayoutEdtSemaineBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi du temps par semaine
-    session: SessionEntity,
+    private val session: SessionEntity,
     inflater: LayoutInflater,
     parent: ViewGroup, // on définit les arguments nécessaires pour l'affichage
-    private val lifecycleScope: LifecycleCoroutineScope // on utilise un scope de coroutine pour gérer les tâches asynchrones ce qui est nécessaire pour afficher les cours de l'emploi du temps
-) : Affichage(session) {
+    private val lifecycleScope: LifecycleCoroutineScope, // on utilise un scope de coroutine pour gérer les tâches asynchrones ce qui est nécessaire pour afficher les cours de l'emploi du temps
+    private val lundi: Date
+) : Affichage() {
     private var density = 0f // on utilise une densité pour calculer des tailles en pixels
     private val rowHeight = 30
     private val columnWidth = 60
     private val heureColumnWidth = 20 // des constantes sont définies pour gérer l'affichage du tableau
     private val heureDebut = 8
     private val heureFin = 18
+    private val llFillerList = mutableListOf<LinearLayout>()
     override var binding = LayoutEdtSemaineBinding.inflate(inflater, parent, true).apply { // une vue est initialisée et est immédiatement traitée pour afficher en utilisant les constantes définies
         val context = root.context // on récupère le contexte de la vue
         density = context.resources.displayMetrics.density // on récupère la densité du contexte, ce qui sert au calcul des tailles en pixels
         grid.children.forEach {
             it.layoutParams.width = (columnWidth.toFloat() * density).toInt() // on définit la largeur de chaque colonne qui sont les intitulés de chaque jour
         }
+
+        val aujourdhui = Date() // on récupère la date d'aujourd'hui
+        val columnAujourdhui = if (aujourdhui.month == lundi.month) aujourdhui.date - lundi.date + 1 // on calcule la différence de jours entre la date d'aujourd'hui et la date du lundi de la semaine affichée
+        else -1 // sauf si le mois est différent, on met la colonne à -1 pour ne pas l'afficher
 
         for (i in heureDebut..heureFin) { // on parcourt les heures du début à la fin
             val row = (i - heureDebut) * 2 + 1 // la ligne ciblé est calculée en fonction de l'heure, on multiplie par 2 car il y a deux lignes par heure, puis on ajoute 1 pour la ligne des jours
@@ -67,6 +73,21 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
 
             grid.addView(linearLayout) // on ajoute la vue au tableau
         }
+
+        if (columnAujourdhui > 0 && columnAujourdhui < 8) {
+            val nbRow = (heureFin - heureDebut + 1) * 2
+
+            val linearLayoutToday = LinearLayout(grid.context) // on crée un LinearLayout pour remplir une demi heure pour le jour d'aujourd'hui
+            linearLayoutToday.background = session.todayBackgroundColor.toDrawable() // on définit la couleur de fond de la vue
+            linearLayoutToday.layoutParams = LayoutParams().apply { // on définit les paramètres de la vue
+                rowSpec = GridLayout.spec(1, nbRow + 1) // on définit la ligne et la colonne de la vue
+                columnSpec = GridLayout.spec(columnAujourdhui, 1)
+                width = (columnWidth.toFloat() * density).toInt() // on définit la largeur et la hauteur de la vue
+                height = ((rowHeight * nbRow).toFloat() * density).toInt()
+            }
+
+            grid.addView(linearLayoutToday)
+        }
     }
 
     override fun afficherCours(cours: CoursEntity, abbreviations: List<AbbreviationEntity>) { // cette fonction permet de définir comment afficher un cours
@@ -74,15 +95,27 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
         if (jour != 0) { // si le jour n'est pas de 0 (dimanche)
             val heureDebut = cours.debut.hours * 2 + if (cours.debut.minutes >= 20) 1 else 0 // on calcule l'heure de début et de fin en comptant une heure comme 2 et si il y a encore plus de 15 minutes, on ajoute 1
             val heureFin = cours.fin.hours * 2 + if (cours.fin.minutes >= 20) 1 else 0
+
             val rowSpan = heureFin - heureDebut // on calcule le nombre de lignes nécessaires pour afficher le cours
             val row = heureDebut - ((this.heureDebut + (cours.debut.timezoneOffset / 60)) * 2) + 1 // on calcule la ligne de début du cours de façon à bien aligner les cours sur la bonne heure de début
+
             val param = LayoutParams().apply { // on définit les paramètres de la vue
                 rowSpec = GridLayout.spec(row, rowSpan) // on définit la ligne et la colonne de la vue
                 columnSpec = GridLayout.spec(jour, 1)
                 width = (columnWidth.toFloat() * density).toInt() // on définit la largeur et la hauteur de la vue
                 height = (rowHeight.toFloat() * density * rowSpan).toInt()
             }
+
             val titre = abbreviations.find { it.mod_lib == cours.titre }?.mod_code ?: cours.titre // on récupère le titre du cours en utilisant les abbréviations si possible
+
+            val aujourdhui = Date() // on récupère la date d'aujourd'hui
+            val estAujourdhui = cours.debut.date == aujourdhui.date && cours.debut.month == aujourdhui.month // on vérifie si le cours se passe aujourd'hui
+
+            val estSae = titre.contains("sae", true) // on vérifie si le cours est une SAE
+
+            val coursColor = if (estSae) session.saeColor else session.coursColor // on définit la couleur du cours en fonction de si il s'agit d'une sae ou d'un cours
+            val coursTextColor = if (estSae) session.saeTextColor else session.coursTextColor // on définit la couleur du texte du cours en fonction de si il s'agit d'une sae ou d'un cours
+
             lifecycleScope.launch(Dispatchers.Main) { // on lance une coroutine sur le thread principal pour afficher le cours
                 val coursBinding = LayoutCoursBinding.inflate( // on crée un binding pour afficher le cours
                     LayoutInflater.from(binding.root.context),
@@ -93,11 +126,13 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
                     tvTitre.text = titre // on définit le texte du titre de la vue
                     root.layoutParams = param // on applique les paramètres à la vue
 
-                    mcvCours.setCardBackgroundColor(session.coursColor)
-                    clContent.allViews.forEach { // la couleur d'arrière plan est appliquée aux cases de cours
-                        it.setBackgroundColor(session.coursColor)
+                    root.background = null
 
-                        if (it is TextView) it.setTextColor(session.coursTextColor) // la couleur du texte est appliquée aux textes des cases de cours
+                    mcvCours.setCardBackgroundColor(coursColor)
+                    clContent.allViews.forEach { // la couleur d'arrière plan est appliquée aux cases de cours
+                        it.setBackgroundColor(coursColor)
+
+                        if (it is TextView) it.setTextColor(coursTextColor) // la couleur du texte est appliquée aux textes des cases de cours
                     }
                 }
 
