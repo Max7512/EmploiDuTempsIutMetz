@@ -46,7 +46,7 @@
                 android:id="@+id/llParametres"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
 
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
@@ -92,7 +92,6 @@
                 android:layout_width="350dp"
                 android:layout_height="350dp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -107,6 +106,36 @@
                 app:layout_constraintStart_toStartOf="@id/colorPicker"
                 app:layout_constraintTop_toBottomOf="@id/colorPicker"
                 app:selector_BrightnessSlider="@drawable/colorpickerview_wheel" />
+
+            <LinearLayout
+                android:id="@+id/llColor"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@color/blue"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/brightnessSlide" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tieColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_hashtag"
+                    android:drawableTint="@color/white"
+                    android:text="EFEFEF"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
