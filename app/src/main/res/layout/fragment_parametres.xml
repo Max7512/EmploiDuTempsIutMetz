@@ -46,7 +46,7 @@
                 android:id="@+id/llParametres"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
 
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
@@ -87,26 +87,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.skydoves.colorpickerview.ColorPickerView
-                android:id="@+id/colorPicker"
-                android:layout_width="350dp"
-                android:layout_height="350dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.skydoves.colorpickerview.sliders.BrightnessSlideBar
-                android:id="@+id/brightnessSlide"
-                android:layout_width="350dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@id/colorPicker"
-                app:layout_constraintStart_toStartOf="@id/colorPicker"
-                app:layout_constraintTop_toBottomOf="@id/colorPicker"
-                app:selector_BrightnessSlider="@drawable/colorpickerview_wheel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
