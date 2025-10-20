@@ -1,26 +1,21 @@
 package com.iutmetz.edt.ui.parametres.parametre
 
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.iutmetz.edt.R
 import com.iutmetz.edt.data.local.entity.SessionEntity
 import com.iutmetz.edt.databinding.LayoutParametreCouleursBinding
+import com.iutmetz.edt.databinding.PopupColorPickerBinding
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.ColorPickerView
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
-import com.skydoves.colorpickerview.sliders.BrightnessSlideBar
 
 
 class ParametreCouleurs( // cette classe génère un paramètre qui permet de changer les couleurs de certains éléments de l'app
@@ -35,29 +30,21 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
     private var onColorPicked =
         { color: Int -> } // cette fonction est appelée lorsque l'utilisateur choisit une couleur
 
-    val colorPickerView: ColorPickerView =
-        popupContent.findViewById(R.id.colorPicker)!! // on récupère la vue du color picker
+    private val colorPickerBinding =
+        PopupColorPickerBinding.inflate(inflater, popupContent, true)
 
-    val brightnessSlideBar: BrightnessSlideBar =
-        popupContent.findViewById(R.id.brightnessSlide)!! // on récupère la vue du slider de luminosité
+    val colorPicker: ColorPickerView = colorPickerBinding.colorPicker
 
-    val llColor: LinearLayout =
-        popupContent.findViewById(R.id.llColor)!! // on récupère la vue du layout qui contient la couleur
-
-    val tieColor: TextInputEditText =
-        popupContent.findViewById(R.id.tieColor)!! // on récupère la vue du text input edit qui contient le code hexadecimal de la couleur
-
-    val tilColor: TextInputLayout =
-        popupContent.findViewById(R.id.tilColor)!! // on récupère la vue du text input layout qui contient le text input edit de la couleur
+    val tieColor: TextInputEditText = colorPickerBinding.tieColor
 
     @OptIn(ExperimentalStdlibApi::class)
     override fun initView() { // on initialise la vue
-        colorPickerView.attachBrightnessSlider(brightnessSlideBar)
+        colorPicker.attachBrightnessSlider(colorPickerBinding.brightnessSlide)
 
         binding.apply { // on initialise les interactions avec l'utilisateur
-            colorPickerView.setColorListener(object : ColorEnvelopeListener {
+            colorPicker.setColorListener(object : ColorEnvelopeListener {
                 override fun onColorSelected(envelope: ColorEnvelope, fromUser: Boolean) {
-                    llColor.setBackgroundColor(envelope.color)
+                    colorPickerBinding.llColor.setBackgroundColor(envelope.color)
                     tieColor.setText(envelope.hexCode.substring(2))
                 }
             })
@@ -78,10 +65,10 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
                         val crop = if (replace.length > 6) replace.removeRange(6, it.length)
                         else replace
 
-                        if ("FF$it".uppercase() == colorPickerView.color.toHexString()
+                        if ("FF$it".uppercase() == colorPicker.color.toHexString()
                                 .uppercase()
                         ) return@let
-                        if (it.length == 6) colorPickerView.setInitialColor("FF$it".hexToInt())
+                        if (it.length == 6) colorPicker.setInitialColor("FF$it".hexToInt())
 
                         tieColor.removeTextChangedListener(this)
                         tieColor.setText(crop)
@@ -173,15 +160,14 @@ class ParametreCouleurs( // cette classe génère un paramètre qui permet de ch
     ) { // cette fonction permet d'afficher ou non le color picker et de changer la fonction de callback du bouton de confirmation
         changePopupVisibility(show)
         if (show) {
-            colorPickerView.setInitialColor(initialColor)
-            colorPickerView.visibility = View.VISIBLE
-            brightnessSlideBar.visibility = View.VISIBLE
-            llColor.visibility = View.VISIBLE
-            tilColor.visibility = View.VISIBLE
+            colorPickerBinding.root.visibility = View.VISIBLE
+            colorPicker.setInitialColor(initialColor)
             changeConfirmCallback {
-                onColorPicked(colorPickerView.color)
+                onColorPicked(colorPicker.color)
                 changeButtonsColor()
             }
+        } else {
+            colorPickerBinding.root.visibility = View.GONE
         }
     }
 }
