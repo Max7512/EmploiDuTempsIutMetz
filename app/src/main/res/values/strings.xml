@@ -13,8 +13,11 @@
     <string name="mise_a_jour">Une nouvelle version est disponible, allez dans les paramètres pour mettre à jour</string>
     <string name="bandeau">Bandeau</string>
     <string name="cours">Cours</string>
+    <string name="sae">SAE</string>
+    <string name="aujourdhui">Fond d\'aujourd\'hui</string>
     <string name="texteBandeau">Texte du bandeau</string>
     <string name="texteCours">Texte des cours</string>
+    <string name="texteSae">Texte des SAE</string>
     <string name="parametres">Paramètres</string>
     <string name="annuler">Annuler</string>
     <string name="confirmer">Confirmer</string>

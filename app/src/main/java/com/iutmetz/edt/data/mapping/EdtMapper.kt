@@ -23,62 +23,62 @@ object EdtMapper : Mapper<List<CoursEntity>, String> {
             uid?.let {
                 dtStart?.let {
                     dtEnd?.let {
-                            summary?.let {
-                                val summarySplit = summary.split(": ")
-                                val groupes = extraitGroupe(summarySplit, summary)
-                                var salle = location?.trim() ?: "Salle???"
-                                val ile = "Ile du Saulcy_"
-                                if (salle.startsWith(ile)) {
-                                    salle = salle.substring(ile.length).trim()
+                        summary?.let {
+                            val summarySplit = summary.split(": ")
+                            val groupes = extraitGroupe(summarySplit, summary)
+                            var salle = location?.trim() ?: "Salle???"
+                            val ile = "Ile du Saulcy_"
+                            if (salle.startsWith(ile)) {
+                                salle = salle.substring(ile.length).trim()
+                            }
+                            var prof = description?.trim() ?: "Prof???"
+                            //console.log("prof", prof)
+                            // toutes les infos en vrac séparées par des "vrais" \n
+                            val lignes = prof.split(Regex("\r?\\n")).toMutableList()
+                            for (i in lignes.size - 1 downTo 0 step 1) {
+                                // et parfois aussi des 0a0d (non visibles)
+                                lignes[i] = lignes[i].trim().replace(Regex("[\\r\\n]\\s+"), "")
+                                // j'essaye de ne garder que l'enseignant
+                                if (lignes[i].length <= 3 || lignes[i].contains("TD ") || lignes[i].contains(
+                                        "TP "
+                                    ) ||
+                                    lignes[i].contains("CM ") || lignes[i].contains("EI ") || lignes[i].contains(
+                                        "Modifi"
+                                    ) ||
+                                    lignes[i].contains("(M")
+                                ) {
+                                    lignes.removeAt(i)
                                 }
-                                var prof = description?.trim() ?: "Prof???"
-                                //console.log("prof", prof)
-                                // toutes les infos en vrac séparées par des "vrais" \n
-                                val lignes = prof.split(Regex("\r?\\n")).toMutableList()
-                                for (i in lignes.size - 1 downTo 0 step 1) {
-                                    // et parfois aussi des 0a0d (non visibles)
-                                    lignes[i] = lignes[i].trim().replace(Regex("[\\r\\n]\\s+"), "")
-                                    // j'essaye de ne garder que l'enseignant
-                                    if (lignes[i].length <= 3 || lignes[i].contains("TD ") || lignes[i].contains(
-                                            "TP "
-                                        ) ||
-                                        lignes[i].contains("CM ") || lignes[i].contains("EI ") || lignes[i].contains(
-                                            "Modifi"
-                                        ) ||
-                                        lignes[i].contains("(M")
+                            }
+                            //console.log("toutes les lignes", lignes)
+                            prof = ""
+                            //console.log("lignes", lignes)
+                            if (lignes.isNotEmpty()) {
+                                lignes.forEach { ligne ->
+                                    val np = ligne.split(" ")
+                                    //console.log("np", np)
+                                    // je m'assure que dans le champ il ya au mois 2 mots d'au moins 2 lettres
+                                    // (c'est comme ça que j'identifie un prof :-( !!!)
+                                    if (np.size >= 2 && np[0].length >= 2 && np[1].length >= 2 && sansChiffre(
+                                            np
+                                        )
                                     ) {
-                                        lignes.removeAt(i)
+                                        prof = ligne.trim()
+                                        prof = extraitNom(prof)
+                                        return@forEach
                                     }
                                 }
-                                //console.log("toutes les lignes", lignes)
-                                prof = ""
-                                //console.log("lignes", lignes)
-                                if (lignes.isNotEmpty()) {
-                                    lignes.forEach { ligne ->
-                                        val np = ligne.split(" ")
-                                        //console.log("np", np)
-                                        // je m'assure que dans le champ il ya au mois 2 mots d'au moins 2 lettres
-                                        // (c'est comme ça que j'identifie un prof :-( !!!)
-                                        if (np.size >= 2 && np[0].length >= 2 && np[1].length >= 2 && sansChiffre(
-                                                np
-                                            )
-                                        ) {
-                                            prof = ligne.trim()
-                                            prof = extraitNom(prof)
-                                            return@forEach
-                                        }
-                                    }
-                                }
-                                val continuer = edt.find { uid == it.id }?.let { doublon ->
-                                    if (dtStart.before(doublon.debut)) doublon.debut = dtStart
+                            }
+                            val continuer = edt.find { uid == it.id }?.let { doublon ->
+                                if (dtStart.before(doublon.debut)) doublon.debut = dtStart
 
-                                    if (dtEnd.after(doublon.fin)) doublon.fin = dtEnd
+                                if (dtEnd.after(doublon.fin)) doublon.fin = dtEnd
 
-                                    if (doublon.salle == "Salle???") doublon.salle = salle
+                                if (doublon.salle == "Salle???") doublon.salle = salle
 
-                                    return@let false
-                                } ?: true
-                                if (continuer)
+                                return@let false
+                            } ?: true
+                            if (continuer)
                                 groupes.forEach {
                                     edt.add(
                                         CoursEntity(
@@ -92,7 +92,7 @@ object EdtMapper : Mapper<List<CoursEntity>, String> {
                                         )
                                     )
                                 }
-                            }
+                        }
                     }
                 }
             }
@@ -130,14 +130,21 @@ object EdtMapper : Mapper<List<CoursEntity>, String> {
     fun extraitGroupe(summarySplit: List<String>, summary: String): List<String> {
         return if (summarySplit.size > 1) {
             val tabGroupe = summarySplit[0].split(" ")
-            val groupe = tabGroupe.last()
+            var groupe = tabGroupe.last()
                 .trim() // on récupère le dernier élément du tableau qui est le groupe ou dans le cas du but 2 DACS ou RA
-            if (groupe == "DACS" || groupe == "RA") { // cas des groupes DACS et RA qui deviendront par exemple RA.3
-                groupeBUT2(summary).split("+")
-            } else if (groupe == "FI") {
-                groupeBUT3RA(tabGroupe).split("+")
-            } else {
-                groupe.split("+") // dans le cas des autres groupes on retourne juste le groupe qui est de la forme X ou X.X
+            if (groupe.contains("RA") && groupe.length > 2) groupe = groupe.replace("RA", "")
+            when (groupe) {
+                "DACS", "RA" -> { // cas des groupes DACS et RA qui deviendront par exemple RA.3
+                    groupeBUT2(summary).split("+")
+                }
+
+                "FI" -> {
+                    groupeBUT3RA(tabGroupe).split("+")
+                }
+
+                else -> {
+                    groupe.split("+") // dans le cas des autres groupes on retourne juste le groupe qui est de la forme X ou X.X
+                }
             }
         } else listOf("")
     }

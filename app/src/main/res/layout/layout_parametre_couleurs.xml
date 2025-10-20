@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bandeau"
         app:layout_constraintBottom_toBottomOf="@id/ibBandeau"
-        app:layout_constraintEnd_toStartOf="@id/ibBandeau"
+        app:layout_constraintStart_toEndOf="@id/ibBandeau"
         app:layout_constraintTop_toTopOf="@id/ibBandeau" />
 
     <ImageButton
@@ -21,7 +21,7 @@
         android:layout_marginVertical="5dp"
         android:src="@drawable/ic_cercle"
         android:theme="@style/Widget.AppCompat.Button.Borderless"
-        app:layout_constraintEnd_toEndOf="@id/ibBandeauText"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="@string/texteBandeau"
         app:layout_constraintBottom_toBottomOf="@id/ibBandeauText"
-        app:layout_constraintEnd_toStartOf="@id/ibBandeauText"
+        app:layout_constraintStart_toEndOf="@id/ibBandeauText"
         app:layout_constraintTop_toTopOf="@id/ibBandeauText" />
 
     <ImageButton
@@ -40,8 +40,27 @@
         android:layout_marginVertical="5dp"
         android:src="@drawable/ic_cercle"
         android:theme="@style/Widget.AppCompat.Button.Borderless"
-        app:layout_constraintStart_toEndOf="@id/tvBandeauText"
+        app:layout_constraintStart_toStartOf="@id/ibBandeau"
         app:layout_constraintTop_toBottomOf="@id/ibBandeau" />
+
+    <TextView
+        android:id="@+id/tvTodayBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/aujourdhui"
+        app:layout_constraintBottom_toBottomOf="@id/ibTodayBackground"
+        app:layout_constraintStart_toEndOf="@id/ibTodayBackground"
+        app:layout_constraintTop_toTopOf="@id/ibTodayBackground" />
+
+    <ImageButton
+        android:id="@+id/ibTodayBackground"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginVertical="5dp"
+        android:src="@drawable/ic_cercle"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintStart_toStartOf="@id/ibBandeauText"
+        app:layout_constraintTop_toBottomOf="@id/ibBandeauText" />
 
     <TextView
         android:id="@+id/tvCours"
@@ -80,5 +99,43 @@
         android:theme="@style/Widget.AppCompat.Button.Borderless"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ibCours" />
+
+    <TextView
+        android:id="@+id/tvSae"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sae"
+        app:layout_constraintBottom_toBottomOf="@id/ibSae"
+        app:layout_constraintEnd_toStartOf="@id/ibSae"
+        app:layout_constraintTop_toTopOf="@id/ibSae" />
+
+    <ImageButton
+        android:id="@+id/ibSae"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginVertical="5dp"
+        android:src="@drawable/ic_cercle"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintEnd_toEndOf="@id/ibSaeText"
+        app:layout_constraintTop_toBottomOf="@id/ibCoursText" />
+
+    <TextView
+        android:id="@+id/tvSaeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/texteSae"
+        app:layout_constraintBottom_toBottomOf="@id/ibSaeText"
+        app:layout_constraintEnd_toStartOf="@id/ibSaeText"
+        app:layout_constraintTop_toTopOf="@id/ibSaeText" />
+
+    <ImageButton
+        android:id="@+id/ibSaeText"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginVertical="5dp"
+        android:src="@drawable/ic_cercle"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ibSae" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

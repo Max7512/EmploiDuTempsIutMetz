@@ -13,11 +13,14 @@ data class SessionEntity( // cette classe correspond au modèle de données des 
     var coursTextColor: Int,
     var bandeauColor: Int,
     var bandeauTextColor: Int,
+    var saeColor: Int,
+    var saeTextColor: Int,
+    var todayBackgroundColor: Int,
 
     ) {
 
     override fun toString(): String {
-        return "SessionEntity(promo=$promo,groupe=$groupe, coursColor=$coursColor, coursTextColor=$coursTextColor, bandeauColor=$bandeauColor, bandeauTextColor=$bandeauTextColor)"
+        return "SessionEntity(promo=$promo,groupe=$groupe, coursColor=$coursColor, coursTextColor=$coursTextColor, bandeauColor=$bandeauColor, bandeauTextColor=$bandeauTextColor, saeColor=$saeColor, saeTextColor=$saeTextColor, todayBackgroundColor=$todayBackgroundColor)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -32,6 +35,9 @@ data class SessionEntity( // cette classe correspond au modèle de données des 
         if (coursTextColor != other.coursTextColor) return false
         if (bandeauColor != other.bandeauColor) return false
         if (bandeauTextColor != other.bandeauTextColor) return false
+        if (saeColor != other.saeColor) return false
+        if (saeTextColor != other.saeTextColor) return false
+        if (todayBackgroundColor != other.todayBackgroundColor) return false
 
         return true
     }
@@ -43,6 +49,9 @@ data class SessionEntity( // cette classe correspond au modèle de données des 
         result = 31 * result + coursTextColor
         result = 31 * result + bandeauColor
         result = 31 * result + bandeauTextColor
+        result = 31 * result + saeColor
+        result = 31 * result + saeTextColor
+        result = 31 * result + todayBackgroundColor
         return result
     }
 
@@ -52,6 +61,9 @@ data class SessionEntity( // cette classe correspond au modèle de données des 
         coursColor,
         coursTextColor,
         bandeauColor,
-        bandeauTextColor
+        bandeauTextColor,
+        saeColor,
+        saeTextColor,
+        todayBackgroundColor
     )
 }

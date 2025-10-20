@@ -5,6 +5,9 @@
         <item name="bandeauTextColor">@color/white</item>
         <item name="coursColor">@color/lightBlue</item>
         <item name="coursTextColor">@color/white</item>
+        <item name="saeColor">@color/gray</item>
+        <item name="saeTextColor">@color/white</item>
+        <item name="todayBackgroundColor">@color/highlightTodayLight</item>
     </style>
 
     <style name="Base.Theme.Edt" parent="Theme.Material3.DayNight.NoActionBar">
