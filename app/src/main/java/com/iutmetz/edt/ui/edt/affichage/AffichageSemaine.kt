@@ -35,7 +35,6 @@ class AffichageSemaine( // cette classe permet d'afficher les cours de l'emploi 
     private val heureColumnWidth = 20 // des constantes sont définies pour gérer l'affichage du tableau
     private val heureDebut = 8
     private val heureFin = 18
-    private val llFillerList = mutableListOf<LinearLayout>()
     override var binding = LayoutEdtSemaineBinding.inflate(inflater, parent, true).apply { // une vue est initialisée et est immédiatement traitée pour afficher en utilisant les constantes définies
         val context = root.context // on récupère le contexte de la vue
         density = context.resources.displayMetrics.density // on récupère la densité du contexte, ce qui sert au calcul des tailles en pixels

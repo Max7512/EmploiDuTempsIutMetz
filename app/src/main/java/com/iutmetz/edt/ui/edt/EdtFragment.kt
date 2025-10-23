@@ -126,7 +126,7 @@ class EdtFragment :
                     _affichage = AffichageSemaine(
                         viewModel.session,
                         LayoutInflater.from(requireContext()),
-                        binding.scrollEdt,
+                        binding.layoutEdt,
                         viewLifecycleOwner.lifecycleScope,
                         viewModel.date
                     ) // on initialise l'affichage de l'emploi du temps à un affichage par semaine

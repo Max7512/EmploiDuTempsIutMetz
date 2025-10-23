@@ -134,6 +134,8 @@ dependencies {
     implementation("com.github.skydoves:colorpickerview:2.3.0")
 
     implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.9.4")
+
+    implementation("com.otaliastudios:zoomlayout:1.9.0")
 }
 
 kapt {

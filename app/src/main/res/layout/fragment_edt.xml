@@ -109,13 +109,13 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollEdt"
+        <FrameLayout
+            android:id="@+id/layoutEdt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:theme="@style/Theme.Edt">
 
-        </androidx.core.widget.NestedScrollView>
+        </FrameLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

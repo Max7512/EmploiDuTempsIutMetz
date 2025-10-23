@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.otaliastudios.zoom.ZoomLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
+    android:scrollbars="vertical|horizontal"
     android:theme="@style/Base.Theme.Affichage"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:alignment="center"
+    app:maxZoom="2.5"
+    app:maxZoomType="zoom"
+    app:minZoom="1"
+    app:minZoomType="zoom"
+    app:oneFingerScrollEnabled="true"
+    app:overPinchable="true"
+    app:overScrollHorizontal="true"
+    app:overScrollVertical="true"
+    app:scrollEnabled="true"
+    app:threeFingersScrollEnabled="true"
+    app:transformation="centerInside"
+    app:transformationGravity="auto"
+    app:twoFingersScrollEnabled="true"
+    app:verticalPanEnabled="true"
+    app:zoomEnabled="true">
 
     <GridLayout
         android:id="@+id/grid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="60dp"
@@ -72,4 +84,4 @@
             android:text="@string/samedi"
             android:textSize="10sp" />
     </GridLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.otaliastudios.zoom.ZoomLayout>
