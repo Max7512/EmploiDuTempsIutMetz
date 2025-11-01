@@ -176,10 +176,10 @@ object EdtMapper : Mapper<List<CoursEntity>, String> {
     }
 
     fun groupeBUT3RA(tabGroupe: List<String>): String {
-        return if (tabGroupe.contains("et")) {
+        return if (tabGroupe.contains("et") || tabGroupe.contains("+")) {
             ""
         } else {
-            tabGroupe.findLast { it.isDigitsOnly() }!!
+            tabGroupe.findLast { it.replace("RA", "", true).isDigitsOnly() }!!
         }
     }
 }
